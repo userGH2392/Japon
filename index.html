@@ -1,0 +1,1454 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=1">
+<title>Ryukyu — viaje a Japón</title>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Ryukyu">
+<meta name="theme-color" content="#0C1626">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="iconos/icono-180.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho+B1:wght@600;800&family=Zen+Kaku+Gothic+New:wght@400;500;700&family=Roboto+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   SISTEMA DE DISEÑO
+   Índigo ryukyuense (aizome) + acentos bingata.
+   El color no decora: codifica estado.
+     jade    = confirmado / hecho
+     ámbar   = pendiente de reservar / atención
+     coral   = sin decidir / alerta / ahora
+   ============================================================ */
+:root{
+  --tinta:#0C1626;
+  --tinta-2:#142338;
+  --tinta-3:#1B2E47;
+  --linea:#26405F;
+  --papel:#F2EDE0;
+  --tenue:#93A7BE;
+  --apagado:#5E7186;
+  --ambar:#F5B335;
+  --coral:#E2543A;
+  --jade:#3FB79A;
+  --display:'Shippori Mincho B1',Georgia,serif;
+  --cuerpo:'Zen Kaku Gothic New',-apple-system,BlinkMacSystemFont,'Helvetica Neue',sans-serif;
+  --mono:'Roboto Mono',ui-monospace,SFMono-Regular,Menlo,monospace;
+  --r:14px;
+  --barra:calc(58px + env(safe-area-inset-bottom));
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;padding:0}
+body{
+  background:var(--tinta);
+  color:var(--papel);
+  font-family:var(--cuerpo);
+  font-size:16px;
+  line-height:1.5;
+  -webkit-font-smoothing:antialiased;
+  overscroll-behavior-y:none;
+  padding-bottom:var(--barra);
+}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+a{color:inherit}
+:focus-visible{outline:2px solid var(--ambar);outline-offset:2px;border-radius:6px}
+
+/* ---------- CABECERA ---------- */
+.cab{
+  position:sticky;top:0;z-index:40;
+  background:rgba(12,22,38,.92);
+  backdrop-filter:saturate(160%) blur(14px);
+  -webkit-backdrop-filter:saturate(160%) blur(14px);
+  border-bottom:1px solid var(--linea);
+  padding:calc(env(safe-area-inset-top) + 10px) 16px 10px;
+}
+.cab-fila{display:flex;align-items:baseline;justify-content:space-between;gap:12px}
+.cab-tit{font-family:var(--display);font-weight:800;font-size:21px;line-height:1.15;letter-spacing:.01em}
+.cab-sub{font-family:var(--mono);font-size:11.5px;color:var(--tenue);letter-spacing:.06em;text-transform:uppercase;margin-top:3px}
+.relojes{font-family:var(--mono);font-size:11px;color:var(--tenue);text-align:right;line-height:1.5;white-space:nowrap}
+.relojes b{color:var(--papel);font-weight:500}
+
+/* ---------- ESTRUCTURA ---------- */
+.vista{display:none;padding:16px 16px 28px;max-width:640px;margin:0 auto}
+.vista.on{display:block;animation:ent .22s ease}
+@keyframes ent{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+
+.seccion{margin:26px 0 12px;display:flex;align-items:center;gap:10px}
+.seccion h2{font-family:var(--mono);font-size:11px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--tenue);margin:0}
+.seccion .regla{flex:1;height:1px;background:var(--linea)}
+
+.tarjeta{background:var(--tinta-2);border:1px solid var(--linea);border-radius:var(--r);padding:14px}
+.tenue{color:var(--tenue)}
+.mono{font-family:var(--mono)}
+.mini{font-size:12.5px}
+
+/* ---------- AVISOS ---------- */
+.aviso{
+  display:flex;gap:10px;align-items:flex-start;
+  border-radius:var(--r);padding:11px 13px;margin-bottom:10px;
+  font-size:14px;line-height:1.45;
+  border:1px solid;
+}
+.aviso .ic{font-size:15px;line-height:1.35;flex:0 0 auto}
+.aviso.alerta{background:rgba(226,84,58,.13);border-color:rgba(226,84,58,.45);color:#FFC9BC}
+.aviso.atencion{background:rgba(245,179,53,.12);border-color:rgba(245,179,53,.4);color:#FFDFA6}
+.aviso.info{background:var(--tinta-2);border-color:var(--linea);color:var(--tenue)}
+.aviso b{color:var(--papel)}
+
+/* ---------- LO SIGUIENTE ---------- */
+.siguiente{
+  position:relative;overflow:hidden;
+  background:linear-gradient(155deg,#1A3050 0%,#142338 70%);
+  border:1px solid var(--linea);border-radius:18px;padding:16px;
+}
+.siguiente::before{content:"";position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--coral)}
+.siguiente .eti{font-family:var(--mono);font-size:10.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--coral);font-weight:700}
+.siguiente .qué{font-family:var(--display);font-weight:600;font-size:24px;line-height:1.2;margin:6px 0 2px}
+.cuenta{font-family:var(--mono);font-size:13px;color:var(--ambar);font-weight:500}
+
+/* ---------- LÍNEA DEL DÍA (elemento firma) ---------- */
+.linea{position:relative;padding-left:62px}
+.linea::before{content:"";position:absolute;left:52px;top:6px;bottom:14px;width:1px;background:var(--linea)}
+.bloque{position:relative;margin-bottom:14px}
+.bloque .hora{
+  position:absolute;left:-62px;top:12px;width:44px;text-align:right;
+  font-family:var(--mono);font-size:13px;font-weight:500;color:var(--papel);
+}
+.bloque .hora small{display:block;font-size:9.5px;color:var(--tenue);letter-spacing:.08em;font-weight:400}
+.bloque::before{
+  content:"";position:absolute;left:-14px;top:18px;width:9px;height:9px;border-radius:50%;
+  background:var(--tinta);border:2px solid var(--tenue);
+}
+.bloque[data-estado="confirmado"]::before{border-color:var(--jade);background:var(--jade)}
+.bloque[data-estado="pendiente"]::before{border-color:var(--ambar)}
+.bloque[data-estado="sinDecidir"]::before{border-color:var(--coral)}
+.bloque.pasado{opacity:.42}
+.marca-ahora{position:relative;height:0;margin:0 0 14px}
+.marca-ahora::before{content:"";position:absolute;left:-14px;right:0;top:0;height:1px;background:var(--coral);opacity:.65}
+.marca-ahora span{
+  position:absolute;left:-62px;top:-8px;
+  font-family:var(--mono);font-size:10px;font-weight:700;letter-spacing:.12em;
+  color:var(--coral);text-transform:uppercase;background:var(--tinta);padding-right:6px;
+}
+
+.cuerpo-bloque{background:var(--tinta-2);border:1px solid var(--linea);border-radius:var(--r);padding:13px 14px}
+.bloque-tit{font-weight:700;font-size:16.5px;line-height:1.3}
+.etiquetas{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.eti-p{
+  font-family:var(--mono);font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;
+  padding:3px 7px;border-radius:5px;border:1px solid;
+}
+.eti-p.jade{color:var(--jade);border-color:rgba(63,183,154,.5);background:rgba(63,183,154,.1)}
+.eti-p.ambar{color:var(--ambar);border-color:rgba(245,179,53,.5);background:rgba(245,179,53,.1)}
+.eti-p.coral{color:var(--coral);border-color:rgba(226,84,58,.5);background:rgba(226,84,58,.1)}
+.eti-p.gris{color:var(--tenue);border-color:var(--linea)}
+
+/* ---------- OPCIONES ---------- */
+.opciones{margin-top:11px;display:flex;flex-direction:column;gap:8px}
+.opcion{
+  display:block;width:100%;text-align:left;
+  background:var(--tinta-3);border:1px solid var(--linea);border-radius:11px;padding:11px 12px;
+  transition:border-color .15s,background .15s;
+}
+.opcion[aria-pressed="true"]{border-color:var(--jade);background:rgba(63,183,154,.11)}
+.opcion .on-marca{color:var(--jade);font-family:var(--mono);font-size:10px;font-weight:700;letter-spacing:.1em}
+.opcion h4{margin:0;font-size:15px;font-weight:700;line-height:1.3}
+.opcion p{margin:4px 0 0;font-size:13.5px;color:var(--tenue);line-height:1.45}
+.opcion .datos{font-family:var(--mono);font-size:11.5px;color:var(--tenue);margin-top:7px;letter-spacing:.02em}
+
+/* ---------- BOTONES ---------- */
+.acciones{display:flex;flex-wrap:wrap;gap:7px;margin-top:11px}
+.bt{
+  display:inline-flex;align-items:center;gap:6px;
+  min-height:40px;padding:0 13px;border-radius:10px;
+  border:1px solid var(--linea);background:var(--tinta-3);
+  font-size:13.5px;font-weight:700;
+}
+.bt:active{transform:scale(.97)}
+.bt.primario{background:var(--papel);color:#0C1626;border-color:var(--papel)}
+.bt.fino{min-height:34px;font-size:12.5px;font-weight:500;background:none}
+.bt[disabled]{opacity:.4}
+
+/* ---------- VUELO ---------- */
+.vuelo{display:flex;align-items:center;gap:12px;margin-top:10px}
+.vuelo .pt{text-align:center;flex:0 0 auto}
+.vuelo .pt .cod{font-family:var(--mono);font-size:19px;font-weight:700;letter-spacing:.06em}
+.vuelo .pt .hr{font-family:var(--mono);font-size:13px;color:var(--ambar);margin-top:1px}
+.vuelo .pt .lug{font-size:10.5px;color:var(--tenue);margin-top:2px}
+.vuelo .via{flex:1;position:relative;height:1px;background:var(--linea)}
+.vuelo .via span{
+  position:absolute;left:50%;top:-9px;transform:translateX(-50%);
+  background:var(--tinta-2);padding:0 7px;font-family:var(--mono);font-size:10px;color:var(--tenue);
+}
+
+/* ---------- VIAJE / TRAMOS ---------- */
+.tramo-tit{
+  display:flex;align-items:baseline;gap:9px;margin:22px 0 9px;
+}
+.tramo-tit h3{font-family:var(--display);font-size:19px;font-weight:600;margin:0}
+.tramo-tit .fechas{font-family:var(--mono);font-size:11px;color:var(--tenue);letter-spacing:.05em}
+.fila-dia{
+  display:flex;gap:12px;align-items:center;width:100%;text-align:left;
+  background:var(--tinta-2);border:1px solid var(--linea);border-radius:12px;
+  padding:11px 13px;margin-bottom:7px;
+}
+.fila-dia.gris{background:transparent;border-style:dashed;opacity:.62}
+.fila-dia.hoy{border-color:var(--coral);box-shadow:0 0 0 1px rgba(226,84,58,.35)}
+.fila-dia .num{
+  font-family:var(--display);font-size:23px;font-weight:800;line-height:1;
+  width:34px;flex:0 0 auto;text-align:center;color:var(--tenue);
+}
+.fila-dia.hoy .num{color:var(--coral)}
+.fila-dia .txt{flex:1;min-width:0}
+.fila-dia .txt b{display:block;font-size:15px;font-weight:700;line-height:1.3}
+.fila-dia .txt span{font-family:var(--mono);font-size:11px;color:var(--tenue);letter-spacing:.04em}
+.iconos-dia{font-size:13px;letter-spacing:2px;flex:0 0 auto;opacity:.85}
+
+/* ---------- COMIDA ---------- */
+.filtros{display:flex;gap:7px;overflow-x:auto;padding:2px 0 8px;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+.filtros::-webkit-scrollbar{display:none}
+.chip{
+  flex:0 0 auto;padding:8px 13px;border-radius:999px;
+  border:1px solid var(--linea);background:var(--tinta-2);
+  font-size:13.5px;font-weight:500;white-space:nowrap;
+}
+.chip[aria-pressed="true"]{background:var(--papel);color:#0C1626;border-color:var(--papel);font-weight:700}
+.sitio{background:var(--tinta-2);border:1px solid var(--linea);border-radius:var(--r);padding:13px;margin-bottom:9px}
+.sitio h4{margin:0 0 2px;font-size:16px;font-weight:700;line-height:1.25}
+.sitio .jp{font-family:var(--mono);font-size:11.5px;color:var(--tenue)}
+.sitio p{margin:7px 0 0;font-size:13.5px;line-height:1.5;color:#CBD8E6}
+.sitio .meta{display:flex;flex-wrap:wrap;gap:9px;margin-top:8px;font-family:var(--mono);font-size:11.5px;color:var(--tenue)}
+.cerrado{color:var(--coral);font-weight:700}
+
+/* ---------- PREPARATIVOS ---------- */
+.check{
+  display:flex;gap:11px;align-items:flex-start;width:100%;text-align:left;
+  padding:11px 12px;border-radius:11px;border:1px solid var(--linea);
+  background:var(--tinta-2);margin-bottom:6px;
+}
+.check .caja{
+  flex:0 0 auto;width:21px;height:21px;border-radius:6px;
+  border:2px solid var(--tenue);margin-top:1px;
+  display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;
+}
+.check[aria-pressed="true"] .caja{background:var(--jade);border-color:var(--jade);color:#0C1626}
+.check[aria-pressed="true"] .lab{opacity:.5;text-decoration:line-through}
+.check .lab{font-size:14.5px;line-height:1.4}
+.check .lab em{display:block;font-style:normal;font-size:12.5px;color:var(--tenue);margin-top:2px}
+
+/* ---------- JUEGO ---------- */
+.juego{border:1px solid var(--linea);border-radius:18px;overflow:hidden;background:var(--tinta-2)}
+.juego-cab{
+  display:flex;align-items:center;justify-content:space-between;gap:10px;
+  padding:12px 14px;border-bottom:1px solid var(--linea);
+  background:linear-gradient(90deg,rgba(245,179,53,.1),transparent);
+}
+.juego-cab .t{font-family:var(--mono);font-size:10.5px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--ambar)}
+.racha{font-family:var(--mono);font-size:12px;color:var(--papel);font-weight:500}
+.juego-cuerpo{padding:14px}
+.dato{font-size:14.5px;line-height:1.55;color:#D8E2ED}
+.dato .fuente{display:block;font-family:var(--mono);font-size:10.5px;color:var(--tenue);margin-top:6px;letter-spacing:.03em}
+.quiz-op{
+  display:block;width:100%;text-align:left;padding:11px 13px;border-radius:11px;
+  border:1px solid var(--linea);background:var(--tinta-3);margin-bottom:7px;font-size:14.5px;
+}
+.quiz-op.ok{border-color:var(--jade);background:rgba(63,183,154,.15)}
+.quiz-op.mal{border-color:var(--coral);background:rgba(226,84,58,.13)}
+.insignias{display:grid;grid-template-columns:repeat(auto-fill,minmax(94px,1fr));gap:8px}
+.insignia{
+  border:1px solid var(--linea);border-radius:12px;padding:11px 8px;text-align:center;
+  background:var(--tinta-2);
+}
+.insignia.no{opacity:.32}
+.insignia .em{font-size:23px;display:block;line-height:1.2}
+.insignia .nm{font-size:11px;font-weight:700;margin-top:4px;line-height:1.25}
+
+/* ---------- BARRA INFERIOR ---------- */
+.barra{
+  position:fixed;left:0;right:0;bottom:0;z-index:50;
+  display:grid;grid-template-columns:repeat(5,1fr);
+  background:rgba(12,22,38,.96);
+  backdrop-filter:saturate(160%) blur(16px);
+  -webkit-backdrop-filter:saturate(160%) blur(16px);
+  border-top:1px solid var(--linea);
+  padding-bottom:env(safe-area-inset-bottom);
+}
+.tab{
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;
+  height:58px;color:var(--tenue);
+}
+.tab .g{font-size:19px;line-height:1}
+.tab .n{font-size:10px;font-weight:700;letter-spacing:.02em}
+.tab[aria-current="page"]{color:var(--papel)}
+.tab[aria-current="page"] .g{filter:none}
+.tab[aria-current="page"]::before{
+  content:"";position:absolute;margin-top:-52px;width:26px;height:2px;background:var(--coral);border-radius:2px;
+}
+
+/* ---------- ESTADO / OFFLINE ---------- */
+.sinred{
+  display:none;background:rgba(245,179,53,.14);border-bottom:1px solid rgba(245,179,53,.35);
+  color:#FFDFA6;font-size:12.5px;padding:7px 16px;text-align:center;
+}
+body.offline .sinred{display:block}
+
+/* ---------- MODAL PERFIL ---------- */
+.velo{
+  position:fixed;inset:0;z-index:90;background:rgba(6,12,22,.96);
+  display:flex;align-items:center;justify-content:center;padding:22px;
+}
+.velo[hidden]{display:none}
+.panel{width:100%;max-width:400px}
+.panel h2{font-family:var(--display);font-size:26px;font-weight:800;margin:0 0 6px;line-height:1.2}
+.panel p{color:var(--tenue);font-size:14px;margin:0 0 18px;line-height:1.5}
+.gente{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.persona{
+  padding:14px 10px;border-radius:12px;border:1px solid var(--linea);background:var(--tinta-2);
+  font-size:15.5px;font-weight:700;text-align:center;
+}
+.persona small{display:block;font-family:var(--mono);font-size:10px;color:var(--tenue);font-weight:400;margin-top:3px;letter-spacing:.06em}
+
+/* ---------- CAMBIO DE DÍA ---------- */
+.selector{display:flex;align-items:center;gap:8px;margin-bottom:14px}
+.selector .bt{flex:0 0 auto}
+.selector .centro{flex:1;text-align:center;font-family:var(--mono);font-size:12px;color:var(--tenue);letter-spacing:.06em}
+.conversor{display:flex;gap:8px;align-items:center;margin-top:9px}
+.conversor input{
+  flex:1;min-width:0;background:var(--tinta-3);border:1px solid var(--linea);border-radius:10px;
+  color:var(--papel);font-family:var(--mono);font-size:16px;padding:10px 12px;
+}
+.conversor .res{font-family:var(--mono);font-size:16px;font-weight:700;color:var(--ambar);white-space:nowrap}
+</style>
+</head>
+<body>
+<div class="velo" id="velo" hidden>
+  <div class="panel">
+    <h2>¿Quién eres?</h2>
+    <p>Elige tu nombre. La app recordará tu itinerario, tu maleta y tus aciertos en este móvil.</p>
+    <div class="gente" id="gente"></div>
+  </div>
+</div>
+
+<header class="cab">
+  <div class="cab-fila">
+    <div>
+      <div class="cab-tit" id="cabTit">Ryukyu</div>
+      <div class="cab-sub" id="cabSub">cargando</div>
+    </div>
+    <div class="relojes" id="relojes"></div>
+  </div>
+</header>
+<div class="sinred">Sin conexión — estás viendo la copia guardada en el móvil</div>
+
+<main>
+  <section class="vista on" id="v-hoy"></section>
+  <section class="vista" id="v-viaje"></section>
+  <section class="vista" id="v-comida"></section>
+  <section class="vista" id="v-prep"></section>
+  <section class="vista" id="v-juego"></section>
+</main>
+
+<nav class="barra" id="barra"></nav>
+
+<script>
+/* ═══════════════════════════════════════════════════════════════════
+   ▓▓▓  DATOS DEL VIAJE — EDITA SOLO DENTRO DE ESTE BLOQUE  ▓▓▓
+   Reglas para no romper nada:
+     · Los "id" no se cambian nunca una vez usados: de ellos cuelga
+       lo que cada uno ha marcado en su móvil (maleta, quiz, opciones).
+     · Todo campo es opcional salvo id/fecha/diaNum. Si falta algo,
+       la app oculta esa parte en vez de fallar.
+     · Las horas van en ISO con huso explícito: +09:00 Japón,
+       +08:00 Shanghái, +01:00 Madrid.
+     · Para añadir un día: copia un objeto de DIAS, cambia id/fecha/
+       diaNum y sube VERSION una unidad.
+   ═══════════════════════════════════════════════════════════════════ */
+
+const VERSION = 1;
+const YEN_EUR = 0.0055;                    // 1 ¥ = 0,0055 €
+const SYNC_URL = "";                        // p.ej. "https://usuario.github.io/viaje/datos.json"
+
+/* --- GENTE ------------------------------------------------------ */
+const GENTE = [
+  {id:"nacho",   nombre:"Nacho",   tel:"650433670", grupo:"A", duermeCon:"laura",   alergias:""},
+  {id:"laura",   nombre:"Laura",   tel:"625776220", grupo:"A", duermeCon:"nacho",   alergias:"", cumple:"2026-11-07"},
+  {id:"alvaro",  nombre:"Álvaro",  tel:"650433670", grupo:"A", duermeCon:"cris",    alergias:""},
+  {id:"cris",    nombre:"Cris",    tel:"650433670", grupo:"A", duermeCon:"alvaro",  alergias:""},
+  {id:"borja",   nombre:"Borja",   tel:"650433670", grupo:"B", duermeCon:"maria",   alergias:""},
+  {id:"maria",   nombre:"María",   tel:"650433670", grupo:"B", duermeCon:"borja",   alergias:""},
+  {id:"carmen",  nombre:"Carmen",  tel:"650433670", grupo:"B", duermeCon:"gonzalo", alergias:""},
+  {id:"gonzalo", nombre:"Gonzalo", tel:"650433670", grupo:"B", duermeCon:"carmen",  alergias:""}
+];
+/* Grupo A: desde Madrid el 28 de octubre. Grupo B: se une en Osaka el 3 de noviembre. */
+
+/* --- PREFERENCIAS (provisionales, las cambias tú) --------------- */
+const PREFS = {
+  provisional:true,
+  ritmo:"Medio. Una actividad fuerte al día (buceo o snorkel) y la tarde suelta.",
+  presupuesto:"Comidas de 1.500-3.000 ¥ por persona. Alguna cena buena sin límite.",
+  comidas:["Pescado y marisco","Izakaya","Soba de Okinawa","Carne a la brasa","Poco picante"],
+  imprescindibles:["Tiburones martillo en Tonbara","Hatenohama","Mantas en Ishigaki","Un izakaya de barrio"],
+  vetos:["Cadenas y sitios de turistas","Cenas larguísimas después de bucear"]
+};
+
+/* --- ALOJAMIENTOS ----------------------------------------------- */
+const ALOJ = {
+  "watermark-kume":{
+    nombre:"Watermark Hotel Okinawa Kume Island",
+    dir:"411 Magari, Kumejima, Shimajiri, Okinawa 901-3112",
+    lat:26.3286504, lng:126.8053637, tel:"+81 98-985-8001",
+    entrada:"2026-10-29", salida:"2026-10-31", habitaciones:2,
+    web:"https://watermark-hotels.com/kumeisland/",
+    reserva:"https://drive.google.com/file/d/1UbZPqgCQEAJJFjFf2ZrM3QCn_vS-KJh1/view?usp=drivesdk",
+    notas:"Hora de entrada y salida y si guardan maletas: por confirmar."
+  },
+  "pluslife-ishigaki":{
+    nombre:"Plus Life Ishigaki",
+    dir:"148-4 Ishigaki, Okinawa 907-0023",
+    lat:24.3471249, lng:124.1601744, tel:"+81 980-87-6163",
+    entrada:"2026-10-31", salida:"2026-11-03", habitaciones:2,
+    web:"https://www.booking.com/hotel/jp/purasuraihushi-yuan.es.html",
+    reserva:"",
+    notas:"Apartamentos con lavadora y secadora. Reserva aún sin enlace. Línea 10 directa al aeropuerto."
+  }
+};
+
+/* --- SITIOS DE COMER (verificados por búsqueda, oct. 2026) ------
+   dias: 0=domingo … 6=sábado. "cierra" son los días que NO abre.
+   Horarios y cierres SIEMPRE a reconfirmar en el momento.        */
+const SITIOS = [
+  /* KUME — todos a pie desde la zona de Eef Beach */
+  {id:"km-namiji", nombre:"Namiji", jp:"波路", isla:"Kume", antojo:["pescado","izakaya"], contexto:["cena","comida"],
+   lat:26.3324834, lng:126.8085441, tel:"+81 98-985-7046", precio:"¥¥", nota:"4,3★ (530). Marisco de la isla y awamori local. Sashimi de gamba kuruma y oden casero. La más recomendada de la zona de Eef; en temporada alta hay que reservar.",
+   horario:"11:00-14:00 y 17:00-22:00", cierra:[0,3]},
+  {id:"km-nijiya", nombre:"Steak House NIJIYA", jp:"ステーキハウスにじや", isla:"Kume", antojo:["carne","occidental"], contexto:["cena","comida"],
+   lat:26.3307551, lng:126.8074787, tel:"+81 50-5486-9914", precio:"¥¥", nota:"4,7★ (141). Solomillo de 200 g, gambas de Kumejima, fish and chips. Trato muy fácil con extranjeros.",
+   horario:"11:00-14:30 y 17:00-22:30", cierra:[4]},
+  {id:"km-nanto", nombre:"Nantō Shokurakuen", jp:"南島食楽園", isla:"Kume", antojo:["izakaya","pescado"], contexto:["cena","grupo"],
+   lat:26.3289753, lng:126.8062994, tel:"+81 98-985-8801", precio:"¥¥", nota:"4,2★ (295). Izakaya grande con mesas hundidas y reservados: la mejor opción para ser varios. Carta con fotos. Pescado al vapor muy bien valorado. Reservar.",
+   horario:"17:30-22:00", cierra:[4]},
+  {id:"km-moeka", nombre:"Izakaya Moeka", jp:"居酒屋 萌か", isla:"Kume", antojo:["izakaya","pescado"], contexto:["cena","copa"],
+   lat:26.3321284, lng:126.8085913, tel:"+81 90-4471-8531", precio:"¥¥", nota:"4,6★ (33). Pequeño, de barra, con carta en inglés. Mozuku, gamba a la plancha, sashimi cortado delante. Cabe poca gente.",
+   horario:"17:00-21:30", cierra:[4]},
+  {id:"km-monkey", nombre:"Shima Monkey", jp:"島の猿", isla:"Kume", antojo:["izakaya","carne"], contexto:["cena"],
+   lat:26.3316077, lng:126.8080204, tel:"+81 98-985-8585", precio:"¥¥", nota:"4,2★ (167). Platos para compartir: entraña, karaage, gyoza al ajo. Abre los jueves, que en Kume cierra medio pueblo.",
+   horario:"17:30-22:00", cierra:[1]},
+  {id:"km-parlor", nombre:"Parlor Three Peace", jp:"パーラースリーピース", isla:"Kume", antojo:["soba","barato"], contexto:["comida","rapido"],
+   lat:26.3289163, lng:126.8059322, tel:"+81 98-985-7037", precio:"¥", nota:"4,2★ (243). Soba de Okinawa con brotes de soja, gyoza recién hecha, hielo raspado. Llena de gente local a mediodía. Solo efectivo y carta solo en japonés.",
+   horario:"11:00-15:00", cierra:[]},
+  {id:"km-hanakume", nombre:"Hanakume", jp:"花くめ", isla:"Kume", antojo:["soba","pescado"], contexto:["comida"],
+   lat:26.3306487, lng:126.8069992, tel:"+81 98-985-7717", precio:"¥¥", nota:"4,1★ (115). Casa de comidas de toda la vida. Soba de Kumejima y gambas fritas. Una de las pocas que abre a mediodía por la zona.",
+   horario:"11:00-14:30", cierra:[4]},
+  {id:"km-family", nombre:"FamilyMart Eef Beach", jp:"ファミリーマート", isla:"Kume", antojo:["barato"], contexto:["rapido","cajero"],
+   lat:26.3319349, lng:126.8077770, tel:"+81 98-896-8411", precio:"¥", nota:"Cajero sin comisión y comida a cualquier hora. OJO: no es 24 h como pone el itinerario, cierra a las 23:00.",
+   horario:"07:00-23:00", cierra:[]},
+
+  /* ISHIGAKI — centro (Misakichō) salvo donde se indique */
+  {id:"is-lenpa", nombre:"Sakaba Lenpa", jp:"酒場lenpa", isla:"Ishigaki", antojo:["izakaya","occidental"], contexto:["cena","copa"],
+   lat:24.3390649, lng:124.1553686, tel:"+81 80-9857-8889", precio:"¥¥", nota:"4,8★ (102). Bistró-izakaya pequeño y tranquilo, buena carta de vinos. Destacan la gamba con mayonesa y el arroz frito con caldo de almeja.",
+   horario:"17:00-24:00", cierra:[0]},
+  {id:"is-kafu", nombre:"Kafu", jp:"嘉福", isla:"Ishigaki", antojo:["izakaya","gyoza"], contexto:["cena"],
+   lat:24.3389825, lng:124.1557881, tel:"+81 50-8889-0929", precio:"¥¥", nota:"4,8★ (37). Cocina de las Yaeyama. Gyoza muy celebrada, tofu frito, guiso de ternera. Tablet para pedir con carta en inglés y raciones individuales.",
+   horario:"16:00-23:00", cierra:[1]},
+  {id:"is-ura73", nombre:"URA73 BAL", jp:"裏73バル", isla:"Ishigaki", antojo:["izakaya","barato"], contexto:["copa","cena"],
+   lat:24.3386174, lng:124.1578788, tel:"+81 980-87-9124", precio:"¥¥", nota:"4,8★ (295). Terraza junto al puerto, cerveza muy fría y tres copas por unos 730 ¥. Spam rebozado, gambas fritas, patatas de boniato. Abre todos los días hasta las 2.",
+   horario:"17:00-02:00", cierra:[]},
+  {id:"is-kikusaki", nombre:"Kikusaki", jp:"和食居酒屋 菊咲", isla:"Ishigaki", antojo:["pescado","izakaya"], contexto:["cena","copa"],
+   lat:24.3397162, lng:124.1558241, tel:"+81 980-87-8710", precio:"¥¥", nota:"4,8★ (67). Pulpo frito y gyoza muy buenos, buena carta de sake. Abre hasta las 3 de la mañana.",
+   horario:"17:00-03:00", cierra:[0]},
+  {id:"is-transit", nombre:"TRANSIT ISHIGAKIBASE", jp:"", isla:"Ishigaki", antojo:["carne","pescado"], contexto:["cena"],
+   lat:24.3365784, lng:124.1804275, tel:"+81 90-6634-0326", precio:"¥¥¥", nota:"4,8★ (190). Lo lleva un matrimonio que te explica la carta en inglés. Ternera de Ishigaki y gambas al ajo. Detrás del centro comercial MaxValu, cerca de Prime Scuba. Reservar por teléfono.",
+   horario:"18:00-21:30", cierra:[2,3]},
+  {id:"is-gorihus", nombre:"Gorihus Kitchen", jp:"", isla:"Ishigaki", antojo:["barato","carne"], contexto:["desayuno","comida"],
+   lat:24.3426899, lng:124.1533909, tel:"+81 980-87-8632", precio:"¥¥", nota:"4,8★ (196). Casa de comidas familiar con desayuno contundente: tonkatsu, pollo frito, tortilla. Arroz y sopa de miso a discreción. Muy llena de gente local.",
+   horario:"11:30-15:45", cierra:[5]},
+  {id:"is-sunny", nombre:"Sunny Cafe + Stay", jp:"", isla:"Ishigaki", antojo:["occidental","barato"], contexto:["desayuno","comida"],
+   lat:24.3557271, lng:124.1321795, tel:"+81 70-9078-0763", precio:"¥¥", nota:"4,6★ (271). Terraza sobre el mar, producto ecológico local. Taco rice, tacos de ternera de Ishigaki, zumos. Cuidado con los cuervos en la terraza.",
+   horario:"10:00-15:00", cierra:[]},
+  {id:"is-sushinchu", nombre:"Sushinchu", jp:"寿しんちゅ", isla:"Ishigaki", antojo:["sushi","pescado"], contexto:["comida","cena","rapido"],
+   lat:24.3359487, lng:124.1849121, tel:"+81 980-83-0141", precio:"¥¥", nota:"3,4★ (660). Sushi de cinta con pescado de la isla y nigiri de ternera de Ishigaki. Barato, acepta tarjeta, horario amplísimo. No es alta cocina pero cumple.",
+   horario:"10:30-22:00", cierra:[]},
+  {id:"is-arun", nombre:"Farm to Table ARUN", jp:"農家レストランアルン", isla:"Ishigaki", antojo:["occidental","picante"], contexto:["comida"],
+   lat:24.3765218, lng:124.1276976, tel:"", precio:"¥¥", nota:"4,8★ (93). Restaurante de una finca: el invernadero está al lado. Curry tailandés y rollitos frescos. Menú del mediodía muy bien de precio. Reserva obligatoria por su web.",
+   horario:"11:30-14:30", cierra:[4,5]},
+  {id:"is-ledodo", nombre:"Le DODO", jp:"", isla:"Ishigaki", antojo:["occidental","picante"], contexto:["comida","cena"],
+   lat:24.4613043, lng:124.1377062, tel:"+81 80-3972-4640", precio:"¥¥", nota:"4,8★ (251). Cocina de Mauricio en Kabira, a 100 m del centro de buceo Viking Scuba. Curry de pescado, taco rice, y sirven vino. Opciones veganas si se avisa.",
+   horario:"11:30-14:00 y 17:30-22:00", cierra:[0]},
+  {id:"is-kaboo", nombre:"Kaboo", jp:"石垣牛ケバブ", isla:"Ishigaki", antojo:["carne","barato"], contexto:["rapido","comida"],
+   lat:24.4613359, lng:124.1421534, tel:"", precio:"¥", nota:"4,1★ (75). Kebab de ternera de Ishigaki en la entrada de la bahía de Kabira. Para salir del agua y comer de pie.",
+   horario:"12:00-15:00", cierra:[0]}
+];
+
+/* --- TRAMOS ------------------------------------------------------ */
+const TRAMOS = [
+  {id:"transito", nombre:"Tránsito", dias:["d0"]},
+  {id:"kume",     nombre:"Kume-jima", dias:["d1","d2","d3"]},
+  {id:"ishigaki", nombre:"Ishigaki", dias:["d4","d5","d6"]},
+  {id:"koyasan",  nombre:"Koyasan", dias:["d7"]},
+  {id:"kioto",    nombre:"Kioto", dias:["d8","d9"]},
+  {id:"kiso",     nombre:"Valle de Kiso", dias:["d10"]},
+  {id:"tokio",    nombre:"Tokio", dias:["d11","d12","d13","d14","d15","d16"]},
+  {id:"vuelta",   nombre:"Vuelta", dias:["d17"]}
+];
+
+/* --- DÍAS --------------------------------------------------------- */
+const DIAS = [
+
+{id:"d0", fecha:"2026-10-28", diaNum:0, isla:"En el aire", tz:"+01:00", grupos:["A"],
+ titular:"Madrid → Shanghái",
+ bloques:[
+  {id:"d0-b1", tipo:"transporte", estado:"confirmado", hora:"10:30",
+   titulo:"Vuelo a Shanghái",
+   vuelo:{numero:"MU710", localizador:"MU710", desde:"MAD", hasta:"PVG",
+          desdeNom:"Madrid · T1", hastaNom:"Shanghái Pudong · T1",
+          salida:"2026-10-28T10:30:00+01:00", llegada:"2026-10-29T06:20:00+08:00"},
+   avisos:["Vuelo nocturno de unas 12 h. Llegada a Shanghái de madrugada."]},
+  {id:"d0-b2", tipo:"plan", estado:"pendiente", hora:"07:30",
+   titulo:"Estar en la T1 de Barajas",
+   opciones:[{id:"d0-b2-o1", nombre:"Tres horas antes", desc:"MU710 sale a las 10:30. Con maletas facturadas y equipo de buceo, mejor sobrado.",
+              lugar:{nombre:"Aeropuerto Madrid-Barajas T1", lat:40.4936, lng:-3.5668}}]}
+ ],
+ juego:{
+  reto:{id:"d0-r", texto:"Foto de grupo en la puerta de embarque antes de subir. Es la única del viaje con todos aún limpios."},
+  dato:{id:"d0-d", texto:"En Japón la propina no solo no se espera: dejarla se considera de mala educación. Si te devuelven el cambio hasta el último yen, no es un error.", fuente:"Destino.md"},
+  quiz:{id:"d0-q", pregunta:"En un taxi japonés, ¿qué significa la luz verde en el parabrisas?",
+        opciones:["Que está libre","Que está ocupado","Que acepta tarjeta"], correcta:1,
+        explicacion:"Al revés que en España: verde es ocupado, roja es libre. Lo tenéis apuntado en Destino.md.", desde:"18:00"},
+  prediccion:{id:"d0-p", texto:"¿Cuántas horas dormirás en el vuelo a Shanghái?", opciones:["Menos de 2","Entre 2 y 5","Más de 5"], resuelve:"d1"}
+ }},
+
+{id:"d1", fecha:"2026-10-29", diaNum:1, isla:"Kume-jima", tz:"+09:00", grupos:["A"],
+ titular:"Tres vuelos hasta Kume",
+ alojamientoId:"watermark-kume",
+ avisos:[
+  {tono:"alerta", texto:"<b>El vuelo Naha → Kume sigue sin reservar.</b> Sin él no llegáis a la isla hoy. El RAC881 de las 17:25 encaja con la llegada a Naha, pero hay que comprarlo."},
+  {tono:"atencion", texto:"<b>El traslado del aeropuerto al hotel no está decidido.</b> Si al final es coche de alquiler, hay que reservarlo antes de salir de Madrid."},
+  {tono:"info", texto:"Día larguísimo: salís de Shanghái a las 08:55 y llegáis al hotel pasadas las 19:00 hora japonesa. Cenad cerca."}
+ ],
+ bloques:[
+  {id:"d1-b1", tipo:"transporte", estado:"confirmado", hora:"08:55", titulo:"Shanghái → Osaka",
+   vuelo:{numero:"MU225", localizador:"MU225", desde:"PVG", hasta:"KIX",
+          desdeNom:"Shanghái Pudong · T1", hastaNom:"Osaka Kansai",
+          salida:"2026-10-29T08:55:00+08:00", llegada:"2026-10-29T12:10:00+09:00"},
+   avisos:["Escala de 2 h 35 en Shanghái, misma terminal. Se pierde una hora al cambiar de huso."]},
+  {id:"d1-b2", tipo:"transporte", estado:"confirmado", hora:"14:00", titulo:"Osaka → Naha",
+   vuelo:{numero:"NU5", localizador:"NU5", desde:"KIX", hasta:"OKA",
+          desdeNom:"Osaka Kansai", hastaNom:"Naha, Okinawa",
+          salida:"2026-10-29T14:00:00+09:00", llegada:"2026-10-29T16:20:00+09:00"}},
+  {id:"d1-b3", tipo:"transporte", estado:"pendiente", hora:"17:25", titulo:"Naha → Kume-jima",
+   vuelo:{numero:"RAC881", localizador:"—", desde:"OKA", hasta:"UEO",
+          desdeNom:"Naha, Okinawa", hastaNom:"Kume-jima",
+          salida:"2026-10-29T17:25:00+09:00", llegada:"2026-10-29T17:55:00+09:00"},
+   avisos:["Sin reservar. Es el que queréis: deja 1 h 05 de margen desde la llegada del NU5.","Lo opera Ryukyu Air Commuter, en avión de hélice. Suele venderse a través de JAL."]},
+  {id:"d1-b4", tipo:"traslado", estado:"sinDecidir", hora:"18:10", titulo:"Del aeropuerto al hotel",
+   opciones:[
+    {id:"d1-b4-o1", nombre:"Autobús — Airport Line", desc:"Dirección Eef Beach, bajar en Eef Minshukumura Mae. Se paga con tarjeta al subir y al bajar.",
+     datos:"150-500 ¥ · 30 min", duracionMin:30},
+    {id:"d1-b4-o2", nombre:"Taxi — Kumejima Sogo / Kyoei", desc:"Lo más rápido y lo más caro. Entre cuatro sale a unos 800 ¥ por cabeza.",
+     datos:"2.800-3.400 ¥ · 15 min", duracionMin:15},
+    {id:"d1-b4-o3", nombre:"Coche de alquiler — Orix", desc:"Unos 80 € del 29 al 31. Kume es grande y con el coche llegáis a Uegusuku y a Hatenohama sin depender de nadie.",
+     datos:"~80 € por los 3 días", duracionMin:15, avisos:["Hay que reservarlo con antelación y llevar el permiso internacional."]}
+   ]},
+  {id:"d1-b5", tipo:"comida", estado:"pendiente", hora:"19:30", titulo:"Cenar cerca del hotel",
+   avisos:["Hoy es jueves y en Kume cierran ese día NIJIYA, Nantō Shokurakuen, Moeka y Hanakume. Abren Namiji y Shima Monkey."]}
+ ],
+ comida:{cena:{sugerencias:["km-namiji","km-monkey"], nota:"Jueves: media isla cierra. Estas dos abren."}},
+ juego:{
+  reto:{id:"d1-r", texto:"Sacad dinero nada más llegar. En Kume solo hay dos sitios: el FamilyMart de Eef Beach (sin comisión, hasta las 23:00) y las oficinas de Correos, que cierran a las 17:00."},
+  dato:{id:"d1-d", texto:"Kume-jima es famosa en todo Okinawa por sus gambas kuruma: la prefectura es la mayor productora de Japón y aquí se comen a precio de isla, no de capital.", fuente:"Reseñas y guías locales de Kumejima"},
+  quiz:{id:"d1-q", pregunta:"¿Hasta qué hora abre en realidad el FamilyMart de Eef Beach?",
+        opciones:["24 horas","Hasta las 23:00","Hasta las 20:00"], correcta:1,
+        explicacion:"El itinerario lo daba por 24 h, pero abre de 07:00 a 23:00. Importante si llegáis tarde y queréis sacar dinero.", desde:"20:00"},
+  prediccion:{id:"d1-p", texto:"¿Cuál de los tres traslados acabaréis usando?", opciones:["Autobús","Taxi","Coche de alquiler"], resuelve:"d2"}
+ }},
+
+{id:"d2", fecha:"2026-10-30", diaNum:2, isla:"Kume-jima", tz:"+09:00", grupos:["A"],
+ titular:"Tiburones martillo en Tonbara",
+ alojamientoId:"watermark-kume",
+ avisos:[
+  {tono:"info", texto:"Tonbara es un pináculo en mar abierto con corriente fuerte. Es una inmersión seria: dormid y desayunad bien."}
+ ],
+ bloques:[
+  {id:"d2-b1", tipo:"plan", estado:"confirmado", hora:"10:00", titulo:"Bucear con tiburones martillo",
+   opciones:[{id:"d2-b1-o1", nombre:"Shirahama Marine — Tonbara", desc:"Reservado. El pináculo de Tonbara, frente a Kume, es uno de los puntos de Japón donde se ven bancos de tiburón martillo.",
+    lugar:{nombre:"Shirahama Marine, Kume-jima", lat:26.3323, lng:126.8104},
+    web:"https://www.shirahama-marine.com/", datos:"Recogida 10:00 · reservado",
+    avisos:["Dirección exacta del punto de encuentro: por confirmar con ellos."]}]},
+  {id:"d2-b2", tipo:"comida", estado:"pendiente", hora:"14:30", titulo:"Comer al salir del agua",
+   avisos:["Viernes: abre todo. Parlor Three Peace cierra a las 15:00, así que id directos."]},
+  {id:"d2-b3", tipo:"plan", estado:"pendiente", hora:"16:30", titulo:"Ruinas del castillo de Uegusuku",
+   opciones:[{id:"d2-b3-o1", nombre:"Uegusukujō", desc:"El punto más alto de la isla. Solo quedan los muros de piedra, pero se ve Kume entera en todas las direcciones. Entrada libre, sin horario.",
+    lugar:{nombre:"Uegusuku Castle Ruins", lat:26.3771252, lng:126.7702116},
+    datos:"Gratis · 24 h · hay parking",
+    avisos:["Se sube en coche. A pie o en bici es muy duro.","Hace mucho viento arriba: cuidado con las gorras."]}]},
+  {id:"d2-b4", tipo:"comida", estado:"pendiente", hora:"19:30", titulo:"Cenar cerca del hotel"}
+ ],
+ comida:{
+  comida:{sugerencias:["km-parlor","km-hanakume"], nota:"Los dos cierran a media tarde."},
+  cena:{sugerencias:["km-nanto","km-nijiya","km-moeka"], nota:"Viernes, abre todo. Nantō Shokurakuen es el que mejor lleva a un grupo."}
+ },
+ juego:{
+  reto:{id:"d2-r", texto:"El que vea el primer martillo invita a la primera ronda de awamori. Sin fotos no hay premio."},
+  dato:{id:"d2-d", texto:"Uegusukujō, adonde subís por la tarde, es el punto más elevado de Kume. Fue una fortaleza ryukyuense y hoy solo quedan las murallas de piedra: el edificio se perdió en la Segunda Guerra Mundial.", fuente:"Registros del yacimiento y reseñas del lugar"},
+  quiz:{id:"d2-q", pregunta:"¿Qué queda hoy en pie en las ruinas de Uegusuku?",
+        opciones:["El castillo entero restaurado","Solo las murallas de piedra","Una torre de madera"], correcta:1,
+        explicacion:"Solo la base y las murallas. El resto desapareció en la guerra. Por eso la vista es lo que se va a ver.", desde:"18:00"},
+  prediccion:{id:"d2-p", texto:"¿Cuántos tiburones martillo veréis hoy?", opciones:["Ninguno","Entre 1 y 5","Más de 5"], resuelve:"d3"}
+ }},
+
+{id:"d3", fecha:"2026-10-31", diaNum:3, isla:"Kume → Ishigaki", tz:"+09:00", grupos:["A"],
+ titular:"Hatenohama y salto a Ishigaki",
+ alojamientoId:"pluslife-ishigaki",
+ avisos:[
+  {tono:"alerta", texto:"<b>La excursión a Hatenohama no está reservada.</b> Hay que hacerlo con antelación y encajarla entre la salida del hotel y el vuelo de las 15:00. Los barcos salen del puerto de Tomari Fisherina."},
+  {tono:"atencion", texto:"Hora de salida del hotel y si guardan maletas: por confirmar. Con el vuelo a las 15:00 y una excursión en barco por la mañana, el margen es justo."},
+  {tono:"info", texto:"Hoy cambiáis de isla con dos vuelos y llegáis a Ishigaki de noche."}
+ ],
+ bloques:[
+  {id:"d3-b1", tipo:"plan", estado:"pendiente", hora:"08:30", titulo:"Snorkel en Hatenohama",
+   opciones:[
+    {id:"d3-b1-o1", nombre:"Marine Kumejima", desc:"Salidas al banco de arena de Hatenohama desde Tomari Fisherina.",
+     web:"https://marine-kumejima.com/hatenohama/", datos:"30-70 € aprox.",
+     avisos:["Reservar con antelación."]},
+    {id:"d3-b1-o2", nombre:"Kume Tour / World Tours", desc:"Otra agencia para la misma excursión, también desde Tomari.",
+     web:"https://kumetour.world-tours.jp/en/column/snorkeling", datos:"Precio a consultar",
+     avisos:["Reservar con antelación."]}
+   ],
+   avisos:["El puerto de salida es Tomari Fisherina, en Kume. Confirmad el punto exacto al reservar: no lo tengo verificado."]},
+  {id:"d3-b2", tipo:"transporte", estado:"confirmado", hora:"15:00", titulo:"Kume → Naha",
+   vuelo:{numero:"NU212", localizador:"NU212", desde:"UEO", hasta:"OKA",
+          desdeNom:"Kume-jima", hastaNom:"Naha, Okinawa",
+          salida:"2026-10-31T15:00:00+09:00", llegada:"2026-10-31T15:40:00+09:00"}},
+  {id:"d3-b3", tipo:"transporte", estado:"confirmado", hora:"19:25", titulo:"Naha → Ishigaki",
+   vuelo:{numero:"NH1781", localizador:"NH1781", desde:"OKA", hasta:"ISG",
+          desdeNom:"Naha, Okinawa", hastaNom:"Ishigaki",
+          salida:"2026-10-31T19:25:00+09:00", llegada:"2026-10-31T20:25:00+09:00"},
+   avisos:["Casi 4 h de espera en Naha. Da para cenar en el aeropuerto sin prisa."]},
+  {id:"d3-b4", tipo:"traslado", estado:"sinDecidir", hora:"20:45", titulo:"Del aeropuerto al alojamiento",
+   opciones:[
+    {id:"d3-b4-o1", nombre:"Autobús — línea 4 o 10", desc:"Bajar en «Ishigaki» o «Art Hotel Ishigakijima». La línea 10 pasa por delante del alojamiento. Suele pagarse en efectivo.",
+     datos:"~540 ¥ · 40 min", duracionMin:40},
+    {id:"d3-b4-o2", nombre:"Taxi", desc:"Llegáis a las 20:25 y con maletas y equipo de buceo. Entre cuatro sale a unos 850 ¥ por cabeza.",
+     datos:"3.000-3.800 ¥ · 30 min", duracionMin:30}
+   ]}
+ ],
+ comida:{comida:{sugerencias:["km-parlor"], nota:"Si la excursión vuelve pronto. Si no, se come en el aeropuerto de Naha."}},
+ juego:{
+  reto:{id:"d3-r", texto:"En Hatenohama no hay ni una sombra ni un chiringuito. El reto es volver sin quemarse: el que acabe más rojo paga el primer bote de aloe."},
+  dato:{id:"d3-d", texto:"Hatenohama es un banco de arena deshabitado de varios kilómetros frente a Kume, sin vegetación ni edificios. Solo se llega en barco y no hay ni sombra ni agua potable.", fuente:"Agencias locales y guías de Kume-jima"},
+  quiz:{id:"d3-q", pregunta:"¿Qué hay en Hatenohama además de arena?",
+        opciones:["Un pueblo de pescadores","Nada: ni sombra ni agua","Un hotel pequeño"], correcta:1,
+        explicacion:"Nada. Por eso hay que llevar agua, sombrero y crema, y por eso solo se va con agencia.", desde:"18:00"},
+  prediccion:{id:"d3-p", texto:"¿Llegaréis al alojamiento de Ishigaki antes de las 21:15?", opciones:["Sí","No"], resuelve:"d4"}
+ }},
+
+{id:"d4", fecha:"2026-11-01", diaNum:4, isla:"Ishigaki", tz:"+09:00", grupos:["A"],
+ titular:"Mantas en Kabira",
+ alojamientoId:"pluslife-ishigaki",
+ avisos:[
+  {tono:"atencion", texto:"Hoy es domingo y Le DODO, el restaurante que está a 100 m del centro de buceo en Kabira, <b>cierra</b>. Si queréis comer allí arriba, la alternativa a pie es el kebab Kaboo, que también cierra los domingos. Mejor llevar algo o comer al bajar al centro."},
+  {tono:"info", texto:"Viking Scuba os recoge en el alojamiento. Confirmadles la dirección exacta del Plus Life."}
+ ],
+ bloques:[
+  {id:"d4-b1", tipo:"plan", estado:"confirmado", hora:"10:00", titulo:"Bucear con Viking Scuba",
+   opciones:[{id:"d4-b1-o1", nombre:"Viking Scuba Kabira", desc:"Reservado. Vienen a buscaros al alojamiento. Bucean en la zona de Kabira, que es donde se ven las mantas.",
+    lugar:{nombre:"Viking Scuba Kabira", lat:24.4609159, lng:124.1379931},
+    datos:"Recogida 10:00 · reservado · 4,9★ (145)",
+    avisos:["Grupos muy pequeños. Prestan material y llevan comida entre inmersiones."]}]},
+  {id:"d4-b2", tipo:"comida", estado:"pendiente", hora:"14:00", titulo:"Comer",
+   avisos:["El itinerario dice «Spam Sushi». No he podido verificar ningún sitio con ese nombre en Ishigaki: dime a qué te referías y lo añado."]},
+  {id:"d4-b3", tipo:"plan", estado:"pendiente", hora:"20:00", titulo:"Salir a beber sake",
+   opciones:[
+    {id:"d4-b3-o1", nombre:"URA73 BAL", desc:"Terraza junto al puerto, muy barato y abre hasta las 2. Domingo abierto.",
+     lugar:{nombre:"URA73 BAL", lat:24.3386174, lng:124.1578788}, datos:"4,8★ · hasta las 02:00"},
+    {id:"d4-b3-o2", nombre:"Kafu", desc:"Cocina de las Yaeyama y buena carta. Domingo abierto, cierra los lunes.",
+     lugar:{nombre:"Kafu", lat:24.3389825, lng:124.1557881}, datos:"4,8★ · hasta las 23:00"}
+   ],
+   avisos:["Lenpa y Kikusaki, los otros dos buenos de la zona, cierran los domingos."]}
+ ],
+ comida:{
+  comida:{sugerencias:["is-gorihus","is-sushinchu"], nota:"Domingo. Gorihus abre; Le DODO y Kaboo, en Kabira, no."},
+  cena:{sugerencias:["is-ura73","is-kafu"], nota:"Los que abren en domingo."}
+ },
+ juego:{
+  reto:{id:"d4-r", texto:"Aprended a decir «kanpai» bien y brindad con los del centro de buceo antes de acabar el día."},
+  dato:{id:"d4-d", texto:"La zona de Kabira, donde buceáis hoy, es conocida por sus mantas: los centros de la isla las buscan en puntos de limpieza donde los peces limpiadores las atraen a poca profundidad.", fuente:"Centros de buceo de Ishigaki"},
+  quiz:{id:"d4-q", pregunta:"¿Por qué las mantas se dejan ver en puntos concretos de Kabira?",
+        opciones:["Porque allí se alimentan de coral","Porque son estaciones de limpieza","Porque hay menos corriente"], correcta:1,
+        explicacion:"Son estaciones de limpieza: los peces limpiadores les quitan parásitos y las mantas vuelven a los mismos puntos.", desde:"18:00"},
+  prediccion:{id:"d4-p", texto:"¿Veréis manta hoy?", opciones:["Sí","No"], resuelve:"d5"}
+ }},
+
+{id:"d5", fecha:"2026-11-02", diaNum:5, isla:"Ishigaki", tz:"+09:00", grupos:["A"],
+ titular:"Snorkel y playa",
+ alojamientoId:"pluslife-ishigaki",
+ avisos:[
+  {tono:"atencion", texto:"Lunes: Kafu cierra. Lenpa, Kikusaki, URA73 y TRANSIT abren."},
+  {tono:"info", texto:"El itinerario dice «ver la playa bonita» pero no cuál. Dime el nombre y la pongo con su enlace a mapas."}
+ ],
+ bloques:[
+  {id:"d5-b1", tipo:"plan", estado:"confirmado", hora:"10:00", titulo:"Snorkel con Prime Scuba",
+   opciones:[{id:"d5-b1-o1", nombre:"Prime Scuba Ishigaki", desc:"Reservado. Vienen a buscaros. Salen en barco a varios puntos y dan comida a bordo.",
+    lugar:{nombre:"Prime Scuba Ishigaki", lat:24.336195, lng:124.185868},
+    datos:"Recogida 10:00 · reservado · 5,0★ (848)"}]},
+  {id:"d5-b2", tipo:"plan", estado:"sinDecidir", hora:"16:00", titulo:"Ir a la playa",
+   opciones:[{id:"d5-b2-o1", nombre:"Por decidir", desc:"Falta saber a cuál queréis ir. Dímelo y la añado con coordenadas y cómo llegar."}]},
+  {id:"d5-b3", tipo:"comida", estado:"pendiente", hora:"20:00", titulo:"Cenar"}
+ ],
+ comida:{
+  cena:{sugerencias:["is-lenpa","is-transit","is-kikusaki"], nota:"Lunes. TRANSIT hay que reservarlo por teléfono."}
+ },
+ juego:{
+  reto:{id:"d5-r", texto:"Pedid una cosa de la carta sin saber qué es y sin mirar el traductor. Foto del plato antes de averiguarlo."},
+  dato:{id:"d5-d", texto:"El awamori, el destilado de Okinawa, no se hace con arroz japonés sino con arroz índico de grano largo y un moho negro propio de las islas. No es sake.", fuente:"Producción tradicional de Okinawa"},
+  quiz:{id:"d5-q", pregunta:"El awamori es…",
+        opciones:["Un tipo de sake","Un destilado, no un sake","Una cerveza de Okinawa"], correcta:1,
+        explicacion:"Es un destilado con arroz de grano largo. El sake es fermentado; el awamori, destilado y mucho más fuerte.", desde:"18:00"},
+  prediccion:{id:"d5-p", texto:"¿Quién será el primero en caer del sake esta noche?", opciones:["Nacho","Laura","Álvaro","Cris"], resuelve:"d6"}
+ }},
+
+{id:"d6", fecha:"2026-11-03", diaNum:6, isla:"Ishigaki → Osaka", tz:"+09:00", grupos:["A","B"],
+ titular:"Última excursión y reencuentro en Osaka",
+ avisos:[
+  {tono:"alerta", texto:"<b>Hoy se juntan los ocho en Osaka.</b> Faltan por añadir los vuelos de Borja, María, Carmen y Gonzalo, y dónde dormís todos esta noche."},
+  {tono:"atencion", texto:"El NU86 aterriza en Kansai a las 22:15. Con Koyasan mañana, hay que pensar cómo se llega y a qué hora se sale."},
+  {tono:"info", texto:"Elegid una sola excursión: con el vuelo a las 20:05 y el trayecto al aeropuerto, no da para dos."}
+ ],
+ bloques:[
+  {id:"d6-b1", tipo:"plan", estado:"sinDecidir", hora:"10:00", titulo:"Excursión por Ishigaki",
+   opciones:[
+    {id:"d6-b1-o1", nombre:"Taketomi", desc:"Ferry de 20 minutos a una isla de calles de arena y casas tradicionales de tejado rojo. Es la opción con más contenido y la que más tiempo come.",
+     datos:"Ferry ~2.000 ¥ · 20 min", avisos:["Confirmad la hora del último ferry de vuelta antes de ir."]},
+    {id:"d6-b1-o2", nombre:"Faro de Hirakubozaki", desc:"La punta norte de la isla. Carretera larga y bonita, mirador sobre el mar.",
+     lugar:{nombre:"Hirakubozaki Lighthouse", lat:24.6046, lng:124.3131}, datos:"Hace falta coche"},
+    {id:"d6-b1-o3", nombre:"Mirador de Nosokodake", desc:"Vistas de la costa norte y de las islas. Parada corta, se combina con el faro.",
+     lugar:{nombre:"Nosokodake Observation Deck", lat:24.4726, lng:124.2145}, datos:"Hace falta coche"},
+    {id:"d6-b1-o4", nombre:"Palmeral de Yaeyama", desc:"Bosque de palmeras endémicas de las Yaeyama, declarado monumento natural. Paseo corto y a la sombra.",
+     lugar:{nombre:"Yaeyama Palm Forest", lat:24.4133, lng:124.1859}, datos:"Hace falta coche"}
+   ]},
+  {id:"d6-b2", tipo:"transporte", estado:"confirmado", hora:"20:05", titulo:"Ishigaki → Osaka",
+   vuelo:{numero:"NU86", localizador:"NU86", desde:"ISG", hasta:"KIX",
+          desdeNom:"Ishigaki", hastaNom:"Osaka Kansai",
+          salida:"2026-11-03T20:05:00+09:00", llegada:"2026-11-03T22:15:00+09:00"}},
+  {id:"d6-b3", tipo:"plan", estado:"pendiente", hora:"22:30", titulo:"Reencuentro con los otros cuatro",
+   avisos:["Faltan sus vuelos y el alojamiento de esta noche."]}
+ ],
+ comida:{comida:{sugerencias:["is-sunny","is-arun"], nota:"Martes. ARUN abre y hay que reservar por su web."}},
+ juego:{
+  reto:{id:"d6-r", texto:"Grabad un vídeo de diez segundos contando lo mejor de Okinawa para enseñárselo a los cuatro que llegan esta noche."},
+  dato:{id:"d6-d", texto:"Taketomi conserva sus calles de arena blanca y sus casas bajas de tejado de teja roja con shisas en lo alto. La isla entera está protegida como conjunto tradicional.", fuente:"Itinerario del viaje y guías de las Yaeyama"},
+  quiz:{id:"d6-q", pregunta:"¿Cuánto se tarda en ferry de Ishigaki a Taketomi?",
+        opciones:["Unos 20 minutos","Una hora","Dos horas"], correcta:0,
+        explicacion:"Veinte minutos y unos 2.000 ¥. Por eso cabe en una mañana antes del vuelo.", desde:"18:00"},
+  prediccion:{id:"d6-p", texto:"¿Qué excursión acabaréis haciendo?", opciones:["Taketomi","Faro","Mirador","Palmeral"], resuelve:"d7"}
+ }},
+
+/* --- Días por planificar: añade bloques y quita "porPlanificar" --- */
+{id:"d7",  fecha:"2026-11-04", diaNum:7,  isla:"Koyasan", tz:"+09:00", grupos:["A","B"], porPlanificar:true, titular:"Koyasan",
+ avisos:[{tono:"atencion", texto:"Desde Osaka son 2-3 h en tren y funicular. Llegasteis anoche a las 22:15: hay que decidir a qué hora se sale."}]},
+{id:"d8",  fecha:"2026-11-05", diaNum:8,  isla:"Kioto", tz:"+09:00", grupos:["A","B"], porPlanificar:true, titular:"Kioto"},
+{id:"d9",  fecha:"2026-11-06", diaNum:9,  isla:"Kioto", tz:"+09:00", grupos:["A","B"], porPlanificar:true, titular:"Kioto"},
+{id:"d10", fecha:"2026-11-07", diaNum:10, isla:"Valle de Kiso", tz:"+09:00", grupos:["A","B"], porPlanificar:true, titular:"Valle de Kiso",
+ avisos:[{tono:"info", texto:"🎂 Hoy es el cumpleaños de Laura."}]},
+{id:"d11", fecha:"2026-11-08", diaNum:11, isla:"Tokio", tz:"+09:00", grupos:["A","B"], porPlanificar:true, titular:"Tokio"},
+{id:"d12", fecha:"2026-11-09", diaNum:12, isla:"Tokio", tz:"+09:00", grupos:["A","B"], porPlanificar:true, titular:"Tokio"},
+{id:"d13", fecha:"2026-11-10", diaNum:13, isla:"Tokio", tz:"+09:00", grupos:["A","B"], porPlanificar:true, titular:"Tokio"},
+{id:"d14", fecha:"2026-11-11", diaNum:14, isla:"Tokio", tz:"+09:00", grupos:["A","B"], porPlanificar:true, titular:"Tokio"},
+{id:"d15", fecha:"2026-11-12", diaNum:15, isla:"Tokio", tz:"+09:00", grupos:["A","B"], porPlanificar:true, titular:"Tokio"},
+{id:"d16", fecha:"2026-11-13", diaNum:16, isla:"Tokio", tz:"+09:00", grupos:["A","B"], porPlanificar:true, titular:"Tokio"},
+{id:"d17", fecha:"2026-11-14", diaNum:17, isla:"Vuelta a Madrid", tz:"+09:00", grupos:["A","B"], porPlanificar:true, titular:"Vuelta a Madrid",
+ avisos:[{tono:"alerta", texto:"<b>Los dos vuelos de vuelta están sin reservar.</b> Falta saber quién va en cada uno y desde qué aeropuerto."}]}
+];
+
+/* --- PREPARATIVOS ------------------------------------------------ */
+const PREP = {
+ maleta:[
+  {id:"p-m1", t:"Adaptador de enchufe tipo A", n:"Japón usa el mismo que EEUU, dos patillas planas, a 100 V."},
+  {id:"p-m2", t:"Ordenador de buceo y titulación", n:"Shirahama, Viking y Prime os la van a pedir."},
+  {id:"p-m3", t:"Traje corto o lycra", n:"Finales de octubre en Okinawa: agua a unos 26-27 °C."},
+  {id:"p-m4", t:"Crema solar y camiseta de licra", n:"En Hatenohama no hay ni una sombra."},
+  {id:"p-m5", t:"Efectivo en yenes desde Madrid", n:"En Kume solo hay dos cajeros y uno cierra a las 17:00."},
+  {id:"p-m6", t:"Batería externa", n:"Con el móvil de mapa y cámara todo el día no llega."},
+  {id:"p-m7", t:"Bolsa estanca para el barco"},
+  {id:"p-m8", t:"Chanclas y calzado que se pueda mojar"},
+  {id:"p-m9", t:"Ropa de abrigo para Koyasan y Kiso", n:"En noviembre, en la montaña, no es Okinawa."},
+  {id:"p-m10", t:"Toalla de microfibra"}
+ ],
+ gestiones:[
+  {id:"p-g1", t:"Reservar el vuelo Naha → Kume", n:"El RAC881 de las 17:25. Sin esto no hay día 1."},
+  {id:"p-g2", t:"Reservar la excursión a Hatenohama", n:"Marine Kumejima o Kume Tour. Sale de Tomari Fisherina."},
+  {id:"p-g3", t:"Decidir y reservar el traslado en Kume", n:"Si es coche de alquiler, hay que hacerlo ya."},
+  {id:"p-g4", t:"Reservar los vuelos de vuelta del 14"},
+  {id:"p-g5", t:"Comprobar el visado de tránsito en Shanghái", n:"Escala en la T1 de Pudong. Miradlo según pasaporte."},
+  {id:"p-g6", t:"Permiso internacional de conducir", n:"Solo si alquiláis coche. Se saca en la DGT y tarda."},
+  {id:"p-g7", t:"Avisar al banco de que viajáis"},
+  {id:"p-g8", t:"Contratar la eSIM"},
+  {id:"p-g9", t:"Seguro de viaje que cubra buceo", n:"Muchos lo excluyen o lo limitan a 20 m."},
+  {id:"p-g10", t:"Descargar los mapas de Okinawa sin conexión", n:"Kume, Ishigaki, Osaka, Kioto y Tokio. Con datos apagados es lo único que os salva."},
+  {id:"p-g11", t:"Instalar el calendario del viaje", n:"Desde el botón de esta app, una sola vez."}
+ ],
+ lecturas:[
+  {id:"p-l1", t:"La propina está prohibida", n:"No se deja nunca, ni en restaurantes ni en taxis."},
+  {id:"p-l2", t:"El taxi con luz roja está libre", n:"Verde significa ocupado. Al revés que aquí."},
+  {id:"p-l3", t:"Las puertas del taxi se abren solas", n:"No hay que tocarlas; las abre el conductor."},
+  {id:"p-l4", t:"Mucho sitio solo acepta efectivo", n:"Sobre todo en las islas pequeñas."},
+  {id:"p-l5", t:"Los izakaya buenos se llenan", n:"En Kume y en Ishigaki, reservar el mismo día por la mañana."},
+  {id:"p-l6", t:"No se come andando por la calle", n:"Se come de pie al lado del sitio donde has comprado."},
+  {id:"p-l7", t:"Los tatuajes pueden vetarte la piscina", n:"El hotel Watermark no los permite en la piscina."}
+ ]
+};
+
+const INSIGNIAS = [
+ {id:"i-quiz3",   em:"🧠", nm:"Tres seguidas", desc:"Acierta tres quiz seguidos"},
+ {id:"i-racha5",  em:"🔥", nm:"Cinco días",    desc:"Abre la app cinco días seguidos"},
+ {id:"i-buceo",   em:"🦈", nm:"Tonbara",       desc:"Completa el reto del día del martillo"},
+ {id:"i-arena",   em:"🏝️", nm:"Hatenohama",    desc:"Completa el reto del banco de arena"},
+ {id:"i-manta",   em:"🐟", nm:"Manta",         desc:"Completa el reto de Kabira"},
+ {id:"i-maleta",  em:"🎒", nm:"Maleta lista",  desc:"Marca toda la maleta antes de salir"},
+ {id:"i-retos",   em:"🏅", nm:"Sin fallar",    desc:"Completa el reto de cinco días"},
+ {id:"i-todos",   em:"🍶", nm:"Los ocho",      desc:"Llega al día del reencuentro en Osaka"}
+];
+
+/* ═══════════════  FIN DE LOS DATOS EDITABLES  ═══════════════ */
+</script>
+
+<script>
+/* ═══════════  MOTOR DE LA APP — no hace falta tocar nada aquí  ═══════════ */
+
+/* ---------- Almacenamiento con red de seguridad ----------
+   Intenta el disco del móvil. Si el navegador lo bloquea (modo privado,
+   vista previa incrustada), sigue funcionando en memoria durante la sesión
+   en vez de romperse. */
+const Mem = {};
+const Guardar = {
+  leer(k, porDefecto){
+    try{ const v = localStorage.getItem("ryukyu:"+k); return v===null ? porDefecto : JSON.parse(v); }
+    catch(e){ return (k in Mem) ? Mem[k] : porDefecto; }
+  },
+  escribir(k, v){
+    Mem[k] = v;
+    try{ localStorage.setItem("ryukyu:"+k, JSON.stringify(v)); }catch(e){}
+  }
+};
+
+let estado = {
+  perfil: Guardar.leer("perfil", null),
+  vista: "hoy",
+  diaVisto: null,
+  elegidas: Guardar.leer("elegidas", {}),
+  checks:   Guardar.leer("checks", {}),
+  quiz:     Guardar.leer("quiz", {}),
+  retos:    Guardar.leer("retos", {}),
+  predi:    Guardar.leer("predi", {}),
+  visitas:  Guardar.leer("visitas", []),
+  filtro:   {contexto:"todo", antojo:"todo"}
+};
+
+/* ---------- Utilidades de fecha ---------- */
+const DIAS_SEM = ["domingo","lunes","martes","miércoles","jueves","viernes","sábado"];
+const MESES = ["enero","febrero","marzo","abril","mayo","junio","julio","agosto","septiembre","octubre","noviembre","diciembre"];
+
+function ahora(){ return new Date(); }
+/* Hora real en una zona, sin líos de horario de verano */
+function partesEn(zona, d){
+  const f = new Intl.DateTimeFormat("es-ES",{timeZone:zona,hour12:false,
+    year:"numeric",month:"2-digit",day:"2-digit",hour:"2-digit",minute:"2-digit"});
+  const o = {}; f.formatToParts(d||new Date()).forEach(p=>o[p.type]=p.value);
+  return {fecha:`${o.year}-${o.month}-${o.day}`, hora:`${o.hour==="24"?"00":o.hour}:${o.minute}`,
+          min:(+o.hour%24)*60 + (+o.minute)};
+}
+function hhmm(iso){
+  const m = iso.match(/T(\d{2}):(\d{2})/); return m ? m[1]+":"+m[2] : "";
+}
+function fechaLarga(f){
+  const [a,m,d] = f.split("-").map(Number);
+  const dt = new Date(Date.UTC(a,m-1,d));
+  return DIAS_SEM[dt.getUTCDay()] + " " + d + " de " + MESES[m-1];
+}
+function diaSemana(f){
+  const [a,m,d] = f.split("-").map(Number);
+  return new Date(Date.UTC(a,m-1,d)).getUTCDay();
+}
+function minutosDe(hm){ if(!hm) return null; const p=hm.split(":"); return +p[0]*60 + +p[1]; }
+
+function diaDeHoy(){
+  const iso = partesEn("Asia/Tokyo").fecha;
+  return DIAS.find(d=>d.fecha===iso) || null;
+}
+function diaActivo(){
+  if(estado.diaVisto){ const d = DIAS.find(x=>x.id===estado.diaVisto); if(d) return d; }
+  return diaDeHoy() || DIAS[0];
+}
+function esHoy(d){ const h = diaDeHoy(); return h && h.id===d.id; }
+
+/* ---------- Enlaces a mapas (iOS primero, funciona sin datos) ---------- */
+function mapaApple(nom, lat, lng){
+  if(lat==null) return "";
+  return "https://maps.apple.com/?ll="+lat+","+lng+"&q="+encodeURIComponent(nom)+"&z=16";
+}
+function mapaGoogle(lat, lng){
+  if(lat==null) return "";
+  return "https://www.google.com/maps/search/?api=1&query="+lat+","+lng;
+}
+
+/* ---------- Dinero ---------- */
+function aEuros(y){ return (y*YEN_EUR).toLocaleString("es-ES",{style:"currency",currency:"EUR",maximumFractionDigits:2}); }
+
+/* ---------- Horarios: ¿abre este día? ---------- */
+function abreEl(sitio, fecha){
+  if(!sitio.cierra || !sitio.cierra.length) return true;
+  return !sitio.cierra.includes(diaSemana(fecha));
+}
+
+/* ---------- Calendario .ics ---------- */
+function aUTC(iso){
+  const d = new Date(iso);
+  const p = n=>String(n).padStart(2,"0");
+  return d.getUTCFullYear()+p(d.getUTCMonth()+1)+p(d.getUTCDate())+"T"+p(d.getUTCHours())+p(d.getUTCMinutes())+"00Z";
+}
+function escIcs(s){ return String(s).replace(/[\\;,]/g,m=>"\\"+m).replace(/\n/g,"\\n"); }
+function eventoIcs({uid,ini,fin,tit,lugar,desc,aviso}){
+  return ["BEGIN:VEVENT","UID:"+uid+"@ryukyu","DTSTAMP:"+aUTC(new Date().toISOString()),
+   "DTSTART:"+aUTC(ini),"DTEND:"+aUTC(fin||ini),"SUMMARY:"+escIcs(tit),
+   lugar?"LOCATION:"+escIcs(lugar):"", desc?"DESCRIPTION:"+escIcs(desc):"",
+   "BEGIN:VALARM","TRIGGER:-PT"+(aviso||60)+"M","ACTION:DISPLAY","DESCRIPTION:"+escIcs(tit),"END:VALARM",
+   "END:VEVENT"].filter(Boolean).join("\r\n");
+}
+function icsDelViaje(){
+  const ev = [];
+  DIAS.forEach(d=>{
+    if(!d.bloques) return;
+    if(estado.perfil && !d.grupos.includes(GENTE.find(g=>g.id===estado.perfil).grupo)) return;
+    d.bloques.forEach(b=>{
+      if(b.vuelo){
+        ev.push(eventoIcs({uid:b.id, ini:b.vuelo.salida, fin:b.vuelo.llegada,
+          tit:"✈︎ "+b.vuelo.numero+"  "+b.vuelo.desde+" → "+b.vuelo.hasta,
+          lugar:b.vuelo.desdeNom,
+          desc:"Localizador "+b.vuelo.localizador+"\nLlega a "+b.vuelo.hastaNom+" a las "+hhmm(b.vuelo.llegada)+(b.estado==="pendiente"?"\n\n⚠︎ SIN RESERVAR":""),
+          aviso:180}));
+      } else if(b.hora){
+        const ini = d.fecha+"T"+b.hora+":00"+d.tz;
+        ev.push(eventoIcs({uid:b.id, ini, fin:ini, tit:b.titulo, desc:d.titular, aviso:45}));
+      }
+    });
+  });
+  return ["BEGIN:VCALENDAR","VERSION:2.0","PRODID:-//Ryukyu//ES","CALSCALE:GREGORIAN",
+    "X-WR-CALNAME:Viaje a Japón", ...ev, "END:VCALENDAR"].join("\r\n");
+}
+function bajarIcs(texto, nombre){
+  const b = new Blob([texto],{type:"text/calendar;charset=utf-8"});
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(b); a.download = nombre; document.body.appendChild(a); a.click();
+  setTimeout(()=>{URL.revokeObjectURL(a.href); a.remove();}, 500);
+}
+
+/* ---------- Piezas de HTML ---------- */
+const esc = s => String(s==null?"":s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+
+function pintaAviso(a){
+  const ic = a.tono==="alerta" ? "▲" : a.tono==="atencion" ? "◆" : "•";
+  return `<div class="aviso ${a.tono}"><span class="ic">${ic}</span><div>${a.texto}</div></div>`;
+}
+function pintaVuelo(b){
+  const v = b.vuelo;
+  return `<div class="vuelo">
+    <div class="pt"><div class="cod">${esc(v.desde)}</div><div class="hr">${hhmm(v.salida)}</div><div class="lug">${esc(v.desdeNom)}</div></div>
+    <div class="via"><span>${esc(v.numero)}</span></div>
+    <div class="pt"><div class="cod">${esc(v.hasta)}</div><div class="hr">${hhmm(v.llegada)}</div><div class="lug">${esc(v.hastaNom)}</div></div>
+  </div>`;
+}
+function etiquetaEstado(e){
+  if(e==="confirmado") return `<span class="eti-p jade">reservado</span>`;
+  if(e==="pendiente")  return `<span class="eti-p ambar">por reservar</span>`;
+  if(e==="sinDecidir") return `<span class="eti-p coral">sin decidir</span>`;
+  return "";
+}
+function pintaOpcion(bloqueId, o){
+  const elegida = estado.elegidas[bloqueId]===o.id;
+  const lug = o.lugar;
+  return `<button class="opcion" aria-pressed="${elegida}" data-elige="${bloqueId}|${o.id}">
+    <div style="display:flex;justify-content:space-between;gap:8px;align-items:baseline">
+      <h4>${esc(o.nombre)}</h4>${elegida?'<span class="on-marca">ELEGIDA</span>':""}
+    </div>
+    ${o.desc?`<p>${esc(o.desc)}</p>`:""}
+    ${o.datos?`<div class="datos">${esc(o.datos)}</div>`:""}
+    ${(o.avisos||[]).map(a=>`<div class="datos" style="color:var(--ambar)">◆ ${esc(a)}</div>`).join("")}
+    <div class="acciones">
+      ${lug?`<span class="bt fino" data-abre="${esc(mapaApple(lug.nombre,lug.lat,lug.lng))}">Mapa</span>`:""}
+      ${o.web?`<span class="bt fino" data-abre="${esc(o.web)}">Web</span>`:""}
+    </div>
+  </button>`;
+}
+
+/* ---------- VISTA: HOY ---------- */
+function pintaHoy(){
+  const d = diaActivo();
+  const yo = GENTE.find(g=>g.id===estado.perfil);
+  const miGrupo = yo ? yo.grupo : "A";
+  const fuera = !d.grupos.includes(miGrupo);
+  const hoy = esHoy(d);
+  const minAhora = hoy ? partesEn("Asia/Tokyo").min : -1;
+  const idx = DIAS.indexOf(d);
+
+  let h = `<div class="selector">
+    <button class="bt" ${idx===0?"disabled":""} data-dia="${idx>0?DIAS[idx-1].id:""}">‹</button>
+    <div class="centro">${hoy?"HOY · ":""}${esc(fechaLarga(d.fecha).toUpperCase())}</div>
+    <button class="bt" ${idx===DIAS.length-1?"disabled":""} data-dia="${idx<DIAS.length-1?DIAS[idx+1].id:""}">›</button>
+  </div>`;
+
+  if(fuera) h += pintaAviso({tono:"info", texto:`Este tramo no es tuyo: ${esc(d.isla)} lo hacen Nacho, Laura, Álvaro y Cris. Tú te unes el 3 de noviembre en Osaka.`});
+  if(d.porPlanificar) h += pintaAviso({tono:"atencion", texto:"<b>Día por planificar.</b> Todavía no hay nada cargado para esta jornada."});
+  (d.avisos||[]).forEach(a=> h += pintaAviso(a));
+
+  /* Lo siguiente */
+  if(hoy && d.bloques){
+    const sig = d.bloques.filter(b=>b.hora && minutosDe(b.hora)>minAhora)[0];
+    if(sig){
+      const falta = minutosDe(sig.hora) - minAhora;
+      const txt = falta<60 ? `en ${falta} min` : `en ${Math.floor(falta/60)} h ${falta%60} min`;
+      h += `<div class="siguiente">
+        <div class="eti">lo siguiente</div>
+        <div class="qué">${esc(sig.titulo)}</div>
+        <div class="cuenta">${esc(sig.hora)} · ${txt}</div>
+        ${sig.vuelo?pintaVuelo(sig):""}
+      </div>`;
+    }
+  }
+
+  /* Línea del día */
+  if(d.bloques && d.bloques.length){
+    h += `<div class="seccion"><h2>El día</h2><div class="regla"></div></div><div class="linea">`;
+    let puesta = false;
+    d.bloques.forEach(b=>{
+      const m = minutosDe(b.hora);
+      if(hoy && !puesta && m!=null && m>minAhora){
+        h += `<div class="marca-ahora"><span>ahora</span></div>`; puesta = true;
+      }
+      const pasado = hoy && m!=null && m<=minAhora;
+      h += `<div class="bloque ${pasado?"pasado":""}" data-estado="${b.estado||""}">
+        <div class="hora">${esc(b.hora||"")}${b.horaFija===false?"<small>aprox</small>":""}</div>
+        <div class="cuerpo-bloque">
+          <div class="bloque-tit">${esc(b.titulo)}</div>
+          <div class="etiquetas">${etiquetaEstado(b.estado)}${b.tipo==="transporte"?'<span class="eti-p gris">vuelo</span>':""}</div>
+          ${b.vuelo?pintaVuelo(b):""}
+          ${b.vuelo?`<div class="acciones">
+             <span class="bt fino">Localizador ${esc(b.vuelo.localizador)}</span>
+             <button class="bt fino" data-ics="${b.id}">Añadir al calendario</button></div>`:""}
+          ${(b.avisos||[]).map(a=>`<div class="aviso atencion" style="margin:9px 0 0;font-size:13px">◆ <div>${esc(a)}</div></div>`).join("")}
+          ${b.opciones?`<div class="opciones">${b.opciones.map(o=>pintaOpcion(b.id,o)).join("")}</div>`:""}
+        </div>
+      </div>`;
+    });
+    if(hoy && !puesta) h += `<div class="marca-ahora"><span>ahora</span></div>`;
+    h += `</div>`;
+  }
+
+  /* Comida del día */
+  if(d.comida){
+    h += `<div class="seccion"><h2>Comer hoy</h2><div class="regla"></div></div>`;
+    Object.keys(d.comida).forEach(momento=>{
+      const c = d.comida[momento];
+      h += `<div class="tarjeta" style="margin-bottom:9px">
+        <div class="mono mini tenue" style="letter-spacing:.14em;text-transform:uppercase">${esc(momento)}</div>
+        ${c.nota?`<div class="mini tenue" style="margin-top:4px">${esc(c.nota)}</div>`:""}`;
+      c.sugerencias.forEach(id=>{
+        const s = SITIOS.find(x=>x.id===id); if(!s) return;
+        const abre = abreEl(s, d.fecha);
+        h += `<div style="margin-top:10px;padding-top:10px;border-top:1px solid var(--linea)">
+          <div style="display:flex;justify-content:space-between;gap:8px;align-items:baseline">
+            <b style="font-size:15px">${esc(s.nombre)}</b>
+            <span class="mono mini ${abre?"tenue":"cerrado"}">${abre?esc(s.horario):"CIERRA HOY"}</span>
+          </div>
+          <div class="mini tenue" style="margin-top:3px">${esc(s.nota)}</div>
+          <div class="acciones"><button class="bt fino" data-abre="${esc(mapaApple(s.nombre,s.lat,s.lng))}">Mapa</button>
+          ${s.tel?`<a class="bt fino" href="tel:${esc(s.tel)}">Llamar</a>`:""}</div>
+        </div>`;
+      });
+      h += `</div>`;
+    });
+  }
+
+  /* Alojamiento */
+  const al = ALOJ[d.alojamientoId];
+  if(al){
+    h += `<div class="seccion"><h2>Dónde duermes</h2><div class="regla"></div></div>
+    <div class="tarjeta">
+      <b style="font-size:16px">${esc(al.nombre)}</b>
+      <div class="mini tenue" style="margin-top:4px">${esc(al.dir)}</div>
+      ${al.notas?`<div class="mini" style="margin-top:7px;color:var(--ambar)">◆ ${esc(al.notas)}</div>`:""}
+      <div class="acciones">
+        <button class="bt fino" data-abre="${esc(mapaApple(al.nombre,al.lat,al.lng))}">Mapa</button>
+        <a class="bt fino" href="tel:${esc(al.tel)}">Llamar</a>
+        ${al.reserva?`<button class="bt fino" data-abre="${esc(al.reserva)}">Reserva</button>`:""}
+      </div>
+    </div>`;
+  }
+
+  /* Tiempo */
+  h += `<div class="seccion"><h2>Tiempo</h2><div class="regla"></div></div>
+  <div class="tarjeta mini tenue">Sin previsión guardada todavía. Cuando enciendas los datos, pulsa Sincronizar en Preparativos y se queda grabada para consultarla sin conexión.</div>`;
+
+  /* Juego */
+  if(d.juego) h += pintaJuego(d);
+
+  document.getElementById("v-hoy").innerHTML = h;
+}
+
+/* ---------- Cápsula de juego ---------- */
+function pintaJuego(d){
+  const j = d.juego, r = estado.quiz[j.quiz?.id];
+  const hechoReto = estado.retos[j.reto?.id];
+  let h = `<div class="seccion"><h2>Hoy toca</h2><div class="regla"></div></div><div class="juego">
+    <div class="juego-cab"><span class="t">reto del día</span><span class="racha">racha ${racha()} 🔥</span></div>
+    <div class="juego-cuerpo">
+      <div style="font-size:15.5px;line-height:1.5">${esc(j.reto.texto)}</div>
+      <div class="acciones"><button class="bt ${hechoReto?"":"primario"}" data-reto="${j.reto.id}">${hechoReto?"✓ Hecho":"Marcar como hecho"}</button></div>
+    </div>`;
+  if(j.dato){
+    h += `<div class="juego-cab" style="border-top:1px solid var(--linea)"><span class="t">dato del día</span></div>
+    <div class="juego-cuerpo"><div class="dato">${esc(j.dato.texto)}<span class="fuente">Fuente: ${esc(j.dato.fuente)}</span></div></div>`;
+  }
+  if(j.quiz){
+    h += `<div class="juego-cab" style="border-top:1px solid var(--linea)"><span class="t">quiz</span></div><div class="juego-cuerpo">
+      <div style="font-weight:700;font-size:15.5px;margin-bottom:10px">${esc(j.quiz.pregunta)}</div>`;
+    j.quiz.opciones.forEach((o,i)=>{
+      let cl = "";
+      if(r!==undefined) cl = (i===j.quiz.correcta) ? "ok" : (i===r ? "mal" : "");
+      h += `<button class="quiz-op ${cl}" ${r!==undefined?"disabled":""} data-quiz="${j.quiz.id}|${i}|${j.quiz.correcta}">${esc(o)}</button>`;
+    });
+    if(r!==undefined) h += `<div class="mini tenue" style="margin-top:8px;line-height:1.5">${esc(j.quiz.explicacion)}</div>`;
+    h += `</div>`;
+  }
+  if(j.prediccion){
+    const p = estado.predi[j.prediccion.id];
+    h += `<div class="juego-cab" style="border-top:1px solid var(--linea)"><span class="t">tu apuesta</span></div><div class="juego-cuerpo">
+      <div style="font-weight:700;font-size:15px;margin-bottom:10px">${esc(j.prediccion.texto)}</div>`;
+    j.prediccion.opciones.forEach((o,i)=>{
+      h += `<button class="quiz-op ${p===i?"ok":""}" data-predi="${j.prediccion.id}|${i}">${esc(o)}</button>`;
+    });
+    h += `</div>`;
+  }
+  return h + `</div>`;
+}
+function racha(){
+  const v = estado.visitas.slice().sort();
+  if(!v.length) return 0;
+  let n = 1;
+  for(let i=v.length-1;i>0;i--){
+    const a = new Date(v[i]), b = new Date(v[i-1]);
+    if((a-b)/86400000 <= 1.5) n++; else break;
+  }
+  return n;
+}
+
+/* ---------- VISTA: VIAJE ---------- */
+function pintaViaje(){
+  const yo = GENTE.find(g=>g.id===estado.perfil);
+  const miGrupo = yo ? yo.grupo : "A";
+  let h = `<div class="seccion"><h2>18 días</h2><div class="regla"></div></div>`;
+  TRAMOS.forEach(t=>{
+    const ds = t.dias.map(id=>DIAS.find(x=>x.id===id)).filter(Boolean);
+    if(!ds.length) return;
+    const f1 = ds[0].fecha.split("-"), f2 = ds[ds.length-1].fecha.split("-");
+    h += `<div class="tramo-tit"><h3>${esc(t.nombre)}</h3><span class="fechas">${+f1[2]}/${+f1[1]} — ${+f2[2]}/${+f2[1]}</span></div>`;
+    ds.forEach(d=>{
+      const fuera = !d.grupos.includes(miGrupo);
+      const gris = d.porPlanificar || fuera;
+      const ic = (d.bloques||[]).map(b=> b.tipo==="transporte"?"✈":b.tipo==="comida"?"🍜":b.tipo==="traslado"?"🚌":"◆").join("");
+      h += `<button class="fila-dia ${gris?"gris":""} ${esHoy(d)?"hoy":""}" data-dia="${d.id}">
+        <div class="num">${d.diaNum}</div>
+        <div class="txt"><b>${esc(d.titular)}</b><span>${esc(fechaLarga(d.fecha))}${fuera?" · no es tu tramo":d.porPlanificar?" · por planificar":""}</span></div>
+        <div class="iconos-dia">${ic}</div>
+      </button>`;
+    });
+  });
+
+  h += `<div class="seccion"><h2>Alojamientos</h2><div class="regla"></div></div>`;
+  Object.keys(ALOJ).forEach(k=>{
+    const a = ALOJ[k];
+    h += `<div class="tarjeta" style="margin-bottom:9px">
+      <b style="font-size:16px">${esc(a.nombre)}</b>
+      <div class="mono mini tenue" style="margin-top:3px">${esc(a.entrada.split("-").reverse().slice(0,2).join("/"))} → ${esc(a.salida.split("-").reverse().slice(0,2).join("/"))} · ${a.habitaciones} habitaciones</div>
+      <div class="mini tenue" style="margin-top:5px">${esc(a.dir)}</div>
+      <div class="acciones">
+        <button class="bt fino" data-abre="${esc(mapaApple(a.nombre,a.lat,a.lng))}">Mapa</button>
+        <a class="bt fino" href="tel:${esc(a.tel)}">Llamar</a>
+        ${a.web?`<button class="bt fino" data-abre="${esc(a.web)}">Web</button>`:""}
+      </div></div>`;
+  });
+
+  h += `<div class="seccion"><h2>El grupo</h2><div class="regla"></div></div><div class="tarjeta">`;
+  ["A","B"].forEach(g=>{
+    h += `<div class="mono mini tenue" style="letter-spacing:.14em;text-transform:uppercase;margin:${g==="A"?0:14}px 0 7px">${g==="A"?"Desde Madrid, 28 oct":"Se unen en Osaka, 3 nov"}</div>`;
+    GENTE.filter(p=>p.grupo===g).forEach(p=>{
+      h += `<div style="display:flex;justify-content:space-between;align-items:center;padding:7px 0;border-bottom:1px solid var(--linea)">
+        <div><b>${esc(p.nombre)}</b>${p.cumple?" 🎂":""}<div class="mini tenue">con ${esc(GENTE.find(x=>x.id===p.duermeCon).nombre)}</div></div>
+        <a class="bt fino" href="tel:${esc(p.tel)}">${esc(p.tel)}</a></div>`;
+    });
+  });
+  h += `<div class="mini" style="color:var(--ambar);margin-top:12px">◆ Los teléfonos son provisionales: solo el de Laura es real.</div></div>`;
+  document.getElementById("v-viaje").innerHTML = h;
+}
+
+/* ---------- VISTA: COMIDA ---------- */
+const CONTEXTOS = [["todo","Todo"],["desayuno","Desayuno"],["comida","Comida"],["cena","Cena"],["copa","Copa"],["rapido","Rápido"],["grupo","Somos muchos"]];
+const ANTOJOS = [["todo","Todo"],["pescado","Pescado"],["izakaya","Izakaya"],["soba","Soba"],["sushi","Sushi"],["carne","Carne"],["occidental","No japonés"],["barato","Barato"]];
+
+function pintaComida(){
+  const d = diaActivo();
+  const isla = d.isla.includes("Kume") ? "Kume" : d.isla.includes("Ishigaki") ? "Ishigaki" : null;
+  let lista = SITIOS.filter(s=> !isla || s.isla===isla);
+  if(estado.filtro.contexto!=="todo") lista = lista.filter(s=>s.contexto.includes(estado.filtro.contexto));
+  if(estado.filtro.antojo!=="todo") lista = lista.filter(s=>s.antojo.includes(estado.filtro.antojo));
+
+  let h = `<div class="seccion"><h2>¿Qué momento?</h2><div class="regla"></div></div>
+    <div class="filtros">${CONTEXTOS.map(([v,n])=>`<button class="chip" aria-pressed="${estado.filtro.contexto===v}" data-fc="${v}">${n}</button>`).join("")}</div>
+    <div class="seccion" style="margin-top:14px"><h2>¿Qué te apetece?</h2><div class="regla"></div></div>
+    <div class="filtros">${ANTOJOS.map(([v,n])=>`<button class="chip" aria-pressed="${estado.filtro.antojo===v}" data-fa="${v}">${n}</button>`).join("")}</div>`;
+
+  h += pintaAviso({tono:"atencion", texto:`Horarios y días de cierre <b>siempre a reconfirmar</b>. En las islas cambian sin avisar y muchos sitios cierran cuando se acaba el género. Filtrando por <b>${esc(isla||"todas las islas")}</b>, día ${esc(DIAS_SEM[diaSemana(d.fecha)])}.`});
+
+  if(!lista.length) h += `<div class="tarjeta mini tenue">Nada con esos dos filtros. Prueba a quitar uno.</div>`;
+
+  lista.forEach(s=>{
+    const abre = abreEl(s, d.fecha);
+    h += `<div class="sitio">
+      <div style="display:flex;justify-content:space-between;gap:9px;align-items:baseline">
+        <div><h4>${esc(s.nombre)}</h4>${s.jp?`<div class="jp">${esc(s.jp)}</div>`:""}</div>
+        <span class="mono mini">${esc(s.precio)}</span>
+      </div>
+      <p>${esc(s.nota)}</p>
+      <div class="meta">
+        <span class="${abre?"":"cerrado"}">${abre?esc(s.horario):"CIERRA "+DIAS_SEM[diaSemana(d.fecha)].toUpperCase()}</span>
+        <span>${esc(s.isla)}</span>
+      </div>
+      <div class="acciones">
+        <button class="bt fino" data-abre="${esc(mapaApple(s.nombre,s.lat,s.lng))}">Mapa</button>
+        ${s.tel?`<a class="bt fino" href="tel:${esc(s.tel)}">Llamar</a>`:""}
+      </div></div>`;
+  });
+  document.getElementById("v-comida").innerHTML = h;
+}
+
+/* ---------- VISTA: PREPARATIVOS ---------- */
+function pintaPrep(){
+  const grupos = [["maleta","Maleta"],["gestiones","Gestiones"],["lecturas","Antes de ir"]];
+  let h = "";
+  grupos.forEach(([k,nom])=>{
+    const items = PREP[k];
+    const hechos = items.filter(i=>estado.checks[i.id]).length;
+    h += `<div class="seccion"><h2>${nom}</h2><div class="regla"></div><span class="mono mini tenue">${hechos}/${items.length}</span></div>`;
+    items.forEach(i=>{
+      h += `<button class="check" aria-pressed="${!!estado.checks[i.id]}" data-check="${i.id}">
+        <span class="caja">${estado.checks[i.id]?"✓":""}</span>
+        <span class="lab">${esc(i.t)}${i.n?`<em>${esc(i.n)}</em>`:""}</span></button>`;
+    });
+  });
+
+  h += `<div class="seccion"><h2>Calendario</h2><div class="regla"></div></div>
+  <div class="tarjeta">
+    <div class="mini">Descarga todo el viaje al calendario del iPhone de una vez. Las alarmas saltan aunque estés en modo avión, que es la razón por la que el aviso va por aquí y no por notificación.</div>
+    <div class="acciones"><button class="bt primario" data-icsTodo="1">Descargar el calendario del viaje</button></div>
+  </div>`;
+
+  h += `<div class="seccion"><h2>Dinero</h2><div class="regla"></div></div>
+  <div class="tarjeta">
+    <div class="mini tenue">1 ¥ = ${YEN_EUR} €. La propina está prohibida.</div>
+    <div class="conversor">
+      <input id="yen" type="number" inputmode="numeric" placeholder="Yenes" value="3000">
+      <span class="res" id="eur">${aEuros(3000)}</span>
+    </div>
+  </div>`;
+
+  h += `<div class="seccion"><h2>Contenido</h2><div class="regla"></div></div>
+  <div class="tarjeta">
+    <div class="mini tenue">Versión ${VERSION} guardada en el móvil. ${SYNC_URL?"Enciende los datos y pulsa para bajar la última.":"Aún no hay dirección de sincronización configurada."}</div>
+    <div class="acciones">
+      <button class="bt" data-sync="1" ${SYNC_URL?"":"disabled"}>Sincronizar</button>
+      <button class="bt fino" data-perfil="1">Cambiar de persona</button>
+    </div>
+  </div>`;
+
+  h += `<div class="seccion"><h2>Preferencias del grupo</h2><div class="regla"></div></div>
+  <div class="tarjeta">
+    ${PREFS.provisional?`<div class="mini" style="color:var(--ambar);margin-bottom:9px">◆ Provisionales: me las inventé yo para tener algo. Cámbialas.</div>`:""}
+    <div class="mini"><b>Ritmo.</b> ${esc(PREFS.ritmo)}</div>
+    <div class="mini" style="margin-top:7px"><b>Presupuesto.</b> ${esc(PREFS.presupuesto)}</div>
+    <div class="mini" style="margin-top:7px"><b>Imprescindibles.</b> ${PREFS.imprescindibles.map(esc).join(" · ")}</div>
+    <div class="mini" style="margin-top:7px"><b>Vetos.</b> ${PREFS.vetos.map(esc).join(" · ")}</div>
+  </div>`;
+
+  document.getElementById("v-prep").innerHTML = h;
+}
+
+/* ---------- VISTA: JUEGO ---------- */
+function pintaJuegoVista(){
+  const aciertos = Object.keys(estado.quiz).filter(k=>{
+    const d = DIAS.find(x=>x.juego && x.juego.quiz && x.juego.quiz.id===k);
+    return d && estado.quiz[k]===d.juego.quiz.correcta;
+  }).length;
+  const total = Object.keys(estado.quiz).length;
+  const retosHechos = Object.values(estado.retos).filter(Boolean).length;
+  const yo = GENTE.find(g=>g.id===estado.perfil);
+
+  let h = `<div class="tarjeta" style="text-align:center;padding:20px">
+    <div class="mono mini tenue" style="letter-spacing:.16em;text-transform:uppercase">${esc(yo?yo.nombre:"Sin perfil")}</div>
+    <div style="font-family:var(--display);font-size:46px;font-weight:800;line-height:1;margin:8px 0 2px">${racha()}</div>
+    <div class="mini tenue">días seguidos abriendo la app</div>
+    <div style="display:flex;gap:22px;justify-content:center;margin-top:16px">
+      <div><div class="mono" style="font-size:22px;font-weight:700">${aciertos}/${total}</div><div class="mini tenue">quiz</div></div>
+      <div><div class="mono" style="font-size:22px;font-weight:700">${retosHechos}</div><div class="mini tenue">retos</div></div>
+    </div></div>`;
+
+  h += `<div class="seccion"><h2>Insignias</h2><div class="regla"></div></div><div class="insignias">`;
+  INSIGNIAS.forEach(i=>{
+    const g = ganada(i.id, {aciertos, retosHechos});
+    h += `<div class="insignia ${g?"":"no"}"><span class="em">${i.em}</span><div class="nm">${esc(i.nm)}</div>
+      <div class="mini tenue" style="font-size:10px;margin-top:3px">${esc(i.desc)}</div></div>`;
+  });
+  h += `</div>`;
+
+  const abiertas = DIAS.filter(d=>d.juego && d.juego.prediccion && estado.predi[d.juego.prediccion.id]!==undefined);
+  if(abiertas.length){
+    h += `<div class="seccion"><h2>Tus apuestas</h2><div class="regla"></div></div>`;
+    abiertas.forEach(d=>{
+      const p = d.juego.prediccion;
+      h += `<div class="tarjeta" style="margin-bottom:8px">
+        <div class="mono mini tenue">DÍA ${d.diaNum}</div>
+        <div style="font-size:14.5px;margin-top:3px">${esc(p.texto)}</div>
+        <div class="mini" style="color:var(--jade);margin-top:5px">Dijiste: ${esc(p.opciones[estado.predi[p.id]])}</div></div>`;
+    });
+  }
+  document.getElementById("v-juego").innerHTML = h;
+}
+function ganada(id, s){
+  if(id==="i-quiz3")  return s.aciertos>=3;
+  if(id==="i-racha5") return racha()>=5;
+  if(id==="i-retos")  return s.retosHechos>=5;
+  if(id==="i-buceo")  return !!estado.retos["d2-r"];
+  if(id==="i-arena")  return !!estado.retos["d3-r"];
+  if(id==="i-manta")  return !!estado.retos["d4-r"];
+  if(id==="i-maleta") return PREP.maleta.every(i=>estado.checks[i.id]);
+  if(id==="i-todos")  return !!estado.retos["d6-r"];
+  return false;
+}
+
+/* ---------- Cabecera y relojes ---------- */
+function pintaCab(){
+  const d = diaActivo();
+  document.getElementById("cabTit").textContent = esHoy(d) ? d.titular : "Día "+d.diaNum;
+  document.getElementById("cabSub").textContent = d.isla + " · " + fechaLarga(d.fecha);
+  document.getElementById("relojes").innerHTML =
+    `<b>${partesEn("Asia/Tokyo").hora}</b> Japón<br>${partesEn("Europe/Madrid").hora} España`;
+}
+
+/* ---------- Navegación ---------- */
+const TABS = [["hoy","Hoy","◐"],["viaje","Viaje","≡"],["comida","Comer","🍜"],["prep","Listas","☑"],["juego","Juego","◆"]];
+function pintaBarra(){
+  document.getElementById("barra").innerHTML = TABS.map(([id,n,g])=>
+    `<button class="tab" data-tab="${id}" ${estado.vista===id?'aria-current="page"':""}>
+      <span class="g">${g}</span><span class="n">${n}</span></button>`).join("");
+}
+function ir(v){
+  estado.vista = v;
+  document.querySelectorAll(".vista").forEach(s=>s.classList.remove("on"));
+  document.getElementById("v-"+v).classList.add("on");
+  window.scrollTo(0,0);
+  pintaBarra();
+  render();
+}
+function render(){
+  pintaCab();
+  if(estado.vista==="hoy") pintaHoy();
+  if(estado.vista==="viaje") pintaViaje();
+  if(estado.vista==="comida") pintaComida();
+  if(estado.vista==="prep") pintaPrep();
+  if(estado.vista==="juego") pintaJuegoVista();
+}
+
+/* ---------- Perfil ---------- */
+function pidePerfil(){
+  document.getElementById("gente").innerHTML = GENTE.map(g=>
+    `<button class="persona" data-yo="${g.id}">${esc(g.nombre)}<small>${g.grupo==="A"?"desde Madrid":"desde el 3 nov"}</small></button>`).join("");
+  document.getElementById("velo").hidden = false;
+}
+
+/* ---------- Un solo oyente para todo ---------- */
+document.addEventListener("click", e=>{
+  const t = e.target.closest("[data-tab],[data-dia],[data-elige],[data-check],[data-quiz],[data-reto],[data-predi],[data-fc],[data-fa],[data-abre],[data-ics],[data-icsTodo],[data-sync],[data-perfil],[data-yo]");
+  if(!t) return;
+  const d = t.dataset;
+
+  if(d.abre){ e.preventDefault(); e.stopPropagation(); window.open(d.abre,"_blank","noopener"); return; }
+  if(d.tab){ ir(d.tab); return; }
+  if(d.yo){ estado.perfil = d.yo; Guardar.escribir("perfil", d.yo); document.getElementById("velo").hidden = true; render(); return; }
+  if(d.perfil){ pidePerfil(); return; }
+  if(d.dia){ estado.diaVisto = d.dia; ir("hoy"); return; }
+  if(d.elige){
+    const [b,o] = d.elige.split("|");
+    estado.elegidas[b] = (estado.elegidas[b]===o) ? null : o;
+    Guardar.escribir("elegidas", estado.elegidas); render(); return;
+  }
+  if(d.check){ estado.checks[d.check] = !estado.checks[d.check]; Guardar.escribir("checks", estado.checks); render(); return; }
+  if(d.reto){ estado.retos[d.reto] = !estado.retos[d.reto]; Guardar.escribir("retos", estado.retos); render(); return; }
+  if(d.quiz){ const [id,i] = d.quiz.split("|"); estado.quiz[id] = +i; Guardar.escribir("quiz", estado.quiz); render(); return; }
+  if(d.predi){ const [id,i] = d.predi.split("|"); estado.predi[id] = +i; Guardar.escribir("predi", estado.predi); render(); return; }
+  if(d.fc){ estado.filtro.contexto = d.fc; pintaComida(); return; }
+  if(d.fa){ estado.filtro.antojo = d.fa; pintaComida(); return; }
+  if(d.icsTodo){ bajarIcs(icsDelViaje(), "viaje-japon.ics"); return; }
+  if(d.ics){
+    const dia = DIAS.find(x=>(x.bloques||[]).some(b=>b.id===d.ics));
+    const b = dia.bloques.find(x=>x.id===d.ics);
+    bajarIcs(["BEGIN:VCALENDAR","VERSION:2.0","PRODID:-//Ryukyu//ES",
+      eventoIcs({uid:b.id, ini:b.vuelo.salida, fin:b.vuelo.llegada,
+        tit:"✈︎ "+b.vuelo.numero+"  "+b.vuelo.desde+" → "+b.vuelo.hasta,
+        lugar:b.vuelo.desdeNom, desc:"Localizador "+b.vuelo.localizador, aviso:180}),
+      "END:VCALENDAR"].join("\r\n"), b.vuelo.numero+".ics");
+    return;
+  }
+  if(d.sync){ sincroniza(t); return; }
+});
+
+document.addEventListener("input", e=>{
+  if(e.target.id==="yen"){
+    document.getElementById("eur").textContent = aEuros(+e.target.value||0);
+  }
+});
+
+/* ---------- Sincronización manual ---------- */
+async function sincroniza(bt){
+  if(!SYNC_URL) return;
+  bt.textContent = "Bajando…"; bt.disabled = true;
+  try{
+    const r = await fetch(SYNC_URL, {cache:"no-store"});
+    const j = await r.json();
+    if(j.VERSION > VERSION){ Guardar.escribir("remoto", j); bt.textContent = "Versión "+j.VERSION+" — reinicia"; }
+    else bt.textContent = "Ya tienes la última";
+  }catch(err){ bt.textContent = "Sin conexión"; }
+  setTimeout(()=>{ bt.textContent = "Sincronizar"; bt.disabled = false; }, 2600);
+}
+
+/* ---------- Estado de red ---------- */
+function marcaRed(){ document.body.classList.toggle("offline", !navigator.onLine); }
+window.addEventListener("online", marcaRed);
+window.addEventListener("offline", marcaRed);
+
+/* ---------- Arranque ---------- */
+(function inicio(){
+  marcaRed();
+  const hoyISO = new Date().toISOString().slice(0,10);
+  if(!estado.visitas.includes(hoyISO)){ estado.visitas.push(hoyISO); Guardar.escribir("visitas", estado.visitas); }
+  pintaBarra();
+  if(!estado.perfil) pidePerfil();
+  render();
+  setInterval(()=>{ pintaCab(); if(estado.vista==="hoy") pintaHoy(); }, 60000);
+  if("serviceWorker" in navigator){
+    navigator.serviceWorker.register("sw.js").catch(()=>{});
+  }
+})();
+</script>
+</body>
+</html>
