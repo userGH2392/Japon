@@ -321,6 +321,90 @@ body.offline .sinred{display:block}
   color:var(--papel);font-family:var(--mono);font-size:16px;padding:10px 12px;
 }
 .conversor .res{font-family:var(--mono);font-size:16px;font-weight:700;color:var(--ambar);white-space:nowrap}
+
+/* ═══ CATEGORÍAS: el color de la franja izquierda dice QUÉ es.
+   El estado (reservado / por reservar / sin decidir) sigue viviendo
+   en el punto del raíl y en la etiqueta de texto. Dos canales distintos,
+   por posición, para que no se pisen. ═══ */
+:root{
+  --c-vuelo:#5FA8E0;
+  --c-traslado:#A98AD8;
+  --c-comida:#E58AA6;
+  --c-mar:#46C7DE;
+  --c-visita:#EDE3C8;
+}
+
+/* ---- Cabeceras de sección con mucho más peso ---- */
+.seccion{margin:30px 0 12px;display:block}
+.seccion h2{
+  font-family:var(--display);font-size:20px;font-weight:800;letter-spacing:0;
+  text-transform:none;color:var(--papel);margin:0;line-height:1.15;
+}
+.seccion .regla{display:block;height:3px;width:38px;background:var(--ambar);border-radius:2px;margin-top:7px}
+.seccion .cuenta-sec{float:right;font-family:var(--mono);font-size:11px;color:var(--tenue);margin-top:6px}
+
+/* ---- Dos cajas fijas arriba: tiempo y cama ---- */
+.cajas{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-bottom:16px}
+.caja{
+  background:var(--tinta-2);border:1px solid var(--linea);border-radius:14px;
+  padding:12px;min-height:96px;display:flex;flex-direction:column;justify-content:space-between;
+  text-align:left;width:100%;
+}
+.caja .eti{font-family:var(--mono);font-size:9.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--tenue)}
+.caja .gordo{font-family:var(--display);font-size:26px;font-weight:800;line-height:1.05;margin-top:5px}
+.caja .peq{font-size:12px;line-height:1.35;color:var(--tenue);margin-top:3px}
+.caja.tiempo{background:linear-gradient(160deg,#1B3A52,#142338)}
+.caja.cama{background:linear-gradient(160deg,#2A2C4E,#142338)}
+.caja .nom{font-size:14.5px;font-weight:700;line-height:1.25;margin-top:5px}
+.caja .viejo{color:var(--ambar)}
+
+/* ---- Tarjeta plegable del raíl ---- */
+.bloque .cuerpo-bloque{padding:0;overflow:hidden;border-left:3px solid var(--linea)}
+.bloque[data-cat="vuelo"]    .cuerpo-bloque{border-left-color:var(--c-vuelo)}
+.bloque[data-cat="traslado"] .cuerpo-bloque{border-left-color:var(--c-traslado)}
+.bloque[data-cat="comida"]   .cuerpo-bloque{border-left-color:var(--c-comida)}
+.bloque[data-cat="mar"]      .cuerpo-bloque{border-left-color:var(--c-mar)}
+.bloque[data-cat="visita"]   .cuerpo-bloque{border-left-color:var(--c-visita)}
+
+.cabecilla{
+  display:flex;align-items:center;gap:11px;width:100%;text-align:left;
+  padding:13px 13px 13px 12px;
+}
+.cabecilla .ic-cat{font-size:17px;line-height:1;flex:0 0 auto;width:22px;text-align:center}
+.cabecilla .med{flex:1;min-width:0}
+.cabecilla .tit{font-size:16px;font-weight:700;line-height:1.28}
+.cabecilla .bajo{display:flex;align-items:center;gap:7px;margin-top:5px;flex-wrap:wrap}
+.cat-nom{font-family:var(--mono);font-size:9.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--tenue)}
+.bloque[data-cat="vuelo"]    .cat-nom{color:var(--c-vuelo)}
+.bloque[data-cat="traslado"] .cat-nom{color:var(--c-traslado)}
+.bloque[data-cat="comida"]   .cat-nom{color:var(--c-comida)}
+.bloque[data-cat="mar"]      .cat-nom{color:var(--c-mar)}
+.flecha{flex:0 0 auto;color:var(--tenue);font-size:13px;transition:transform .18s}
+.bloque.abierto .flecha{transform:rotate(90deg)}
+.detalle{padding:0 13px 13px;border-top:1px solid var(--linea);padding-top:12px;margin:0 0 0 0}
+.pista{font-family:var(--mono);font-size:10.5px;color:var(--tenue);letter-spacing:.03em}
+
+/* ---- Segmentos de la pestaña Guía ---- */
+.segs{display:flex;gap:6px;overflow-x:auto;padding:2px 0 4px;scrollbar-width:none;margin-bottom:6px}
+.segs::-webkit-scrollbar{display:none}
+.seg{
+  flex:0 0 auto;padding:9px 14px;border-radius:11px;border:1px solid var(--linea);
+  background:var(--tinta-2);font-size:14px;font-weight:600;white-space:nowrap;
+}
+.seg[aria-current="true"]{background:var(--papel);color:#0C1626;border-color:var(--papel);font-weight:700}
+
+/* ---- Franja de color por tramo en la lista del viaje ---- */
+.tramo-tit{border-left:4px solid var(--ambar);padding-left:11px;margin:26px 0 10px;display:block}
+.tramo-tit h3{font-family:var(--display);font-size:21px;font-weight:800;margin:0;line-height:1.1}
+.tramo-tit .fechas{font-family:var(--mono);font-size:11px;color:var(--tenue);letter-spacing:.05em}
+.t-transito{border-left-color:var(--tenue)}
+.t-kume{border-left-color:var(--c-mar)}
+.t-ishigaki{border-left-color:var(--jade)}
+.t-koyasan{border-left-color:var(--c-traslado)}
+.t-kioto{border-left-color:var(--c-comida)}
+.t-kiso{border-left-color:var(--ambar)}
+.t-tokio{border-left-color:var(--c-vuelo)}
+.t-vuelta{border-left-color:var(--tenue)}
 </style>
 </head>
 <body>
@@ -497,7 +581,7 @@ const TRAMOS = [
 /* --- DÍAS --------------------------------------------------------- */
 const DIAS = [
 
-{id:"d0", fecha:"2026-10-28", diaNum:0, isla:"En el aire", tz:"+01:00", grupos:["A"],
+{id:"d0", fecha:"2026-10-28", diaNum:0, isla:"En el aire", tz:"+01:00", grupos:["A"], coords:[40.4168,-3.7038],
  titular:"Madrid → Shanghái",
  bloques:[
   {id:"d0-b1", tipo:"transporte", estado:"confirmado", hora:"10:30",
@@ -506,7 +590,7 @@ const DIAS = [
           desdeNom:"Madrid · T1", hastaNom:"Shanghái Pudong · T1",
           salida:"2026-10-28T10:30:00+01:00", llegada:"2026-10-29T06:20:00+08:00"},
    avisos:["Vuelo nocturno de unas 12 h. Llegada a Shanghái de madrugada."]},
-  {id:"d0-b2", tipo:"plan", estado:"pendiente", hora:"07:30",
+  {id:"d0-b2", cat:"visita", tipo:"plan", estado:"pendiente", hora:"07:30",
    titulo:"Estar en la T1 de Barajas",
    opciones:[{id:"d0-b2-o1", nombre:"Tres horas antes", desc:"MU710 sale a las 10:30. Con maletas facturadas y equipo de buceo, mejor sobrado.",
               lugar:{nombre:"Aeropuerto Madrid-Barajas T1", lat:40.4936, lng:-3.5668}}]}
@@ -520,7 +604,7 @@ const DIAS = [
   prediccion:{id:"d0-p", texto:"¿Cuántas horas dormirás en el vuelo a Shanghái?", opciones:["Menos de 2","Entre 2 y 5","Más de 5"], resuelve:"d1"}
  }},
 
-{id:"d1", fecha:"2026-10-29", diaNum:1, isla:"Kume-jima", tz:"+09:00", grupos:["A"],
+{id:"d1", coords:[26.3287,126.8054], fecha:"2026-10-29", diaNum:1, isla:"Kume-jima", tz:"+09:00", grupos:["A"],
  titular:"Tres vuelos hasta Kume",
  alojamientoId:"watermark-kume",
  avisos:[
@@ -565,21 +649,21 @@ const DIAS = [
   prediccion:{id:"d1-p", texto:"¿Cuál de los tres traslados acabaréis usando?", opciones:["Autobús","Taxi","Coche de alquiler"], resuelve:"d2"}
  }},
 
-{id:"d2", fecha:"2026-10-30", diaNum:2, isla:"Kume-jima", tz:"+09:00", grupos:["A"],
+{id:"d2", coords:[26.3287,126.8054], fecha:"2026-10-30", diaNum:2, isla:"Kume-jima", tz:"+09:00", grupos:["A"],
  titular:"Tiburones martillo en Tonbara",
  alojamientoId:"watermark-kume",
  avisos:[
   {tono:"info", texto:"Tonbara es un pináculo en mar abierto con corriente fuerte. Es una inmersión seria: dormid y desayunad bien."}
  ],
  bloques:[
-  {id:"d2-b1", tipo:"plan", estado:"confirmado", hora:"10:00", titulo:"Bucear con tiburones martillo",
+  {id:"d2-b1", cat:"mar", tipo:"plan", estado:"confirmado", hora:"10:00", titulo:"Bucear con tiburones martillo",
    opciones:[{id:"d2-b1-o1", nombre:"Shirahama Marine — Tonbara", desc:"Reservado. El pináculo de Tonbara, frente a Kume, es uno de los puntos de Japón donde se ven bancos de tiburón martillo.",
     lugar:{nombre:"Shirahama Marine, Kume-jima", lat:26.3323, lng:126.8104},
     web:"https://www.shirahama-marine.com/", datos:"Recogida 10:00 · reservado",
     avisos:["Dirección exacta del punto de encuentro: por confirmar con ellos."]}]},
   {id:"d2-b2", tipo:"comida", estado:"pendiente", hora:"14:30", titulo:"Comer al salir del agua",
    avisos:["Viernes: abre todo. Parlor Three Peace cierra a las 15:00, así que id directos."]},
-  {id:"d2-b3", tipo:"plan", estado:"pendiente", hora:"16:30", titulo:"Ruinas del castillo de Uegusuku",
+  {id:"d2-b3", cat:"visita", tipo:"plan", estado:"pendiente", hora:"16:30", titulo:"Ruinas del castillo de Uegusuku",
    opciones:[{id:"d2-b3-o1", nombre:"Uegusukujō", desc:"El punto más alto de la isla. Solo quedan los muros de piedra, pero se ve Kume entera en todas las direcciones. Entrada libre, sin horario.",
     lugar:{nombre:"Uegusuku Castle Ruins", lat:26.3771252, lng:126.7702116},
     datos:"Gratis · 24 h · hay parking",
@@ -599,7 +683,7 @@ const DIAS = [
   prediccion:{id:"d2-p", texto:"¿Cuántos tiburones martillo veréis hoy?", opciones:["Ninguno","Entre 1 y 5","Más de 5"], resuelve:"d3"}
  }},
 
-{id:"d3", fecha:"2026-10-31", diaNum:3, isla:"Kume → Ishigaki", tz:"+09:00", grupos:["A"],
+{id:"d3", coords:[26.3287,126.8054], fecha:"2026-10-31", diaNum:3, isla:"Kume → Ishigaki", tz:"+09:00", grupos:["A"],
  titular:"Hatenohama y salto a Ishigaki",
  alojamientoId:"pluslife-ishigaki",
  avisos:[
@@ -608,7 +692,7 @@ const DIAS = [
   {tono:"info", texto:"Hoy cambiáis de isla con dos vuelos y llegáis a Ishigaki de noche."}
  ],
  bloques:[
-  {id:"d3-b1", tipo:"plan", estado:"pendiente", hora:"08:30", titulo:"Snorkel en Hatenohama",
+  {id:"d3-b1", cat:"mar", tipo:"plan", estado:"pendiente", hora:"08:30", titulo:"Snorkel en Hatenohama",
    opciones:[
     {id:"d3-b1-o1", nombre:"Marine Kumejima", desc:"Salidas al banco de arena de Hatenohama desde Tomari Fisherina.",
      web:"https://marine-kumejima.com/hatenohama/", datos:"30-70 € aprox.",
@@ -645,7 +729,7 @@ const DIAS = [
   prediccion:{id:"d3-p", texto:"¿Llegaréis al alojamiento de Ishigaki antes de las 21:15?", opciones:["Sí","No"], resuelve:"d4"}
  }},
 
-{id:"d4", fecha:"2026-11-01", diaNum:4, isla:"Ishigaki", tz:"+09:00", grupos:["A"],
+{id:"d4", coords:[24.3471,124.1602], fecha:"2026-11-01", diaNum:4, isla:"Ishigaki", tz:"+09:00", grupos:["A"],
  titular:"Mantas en Kabira",
  alojamientoId:"pluslife-ishigaki",
  avisos:[
@@ -653,14 +737,14 @@ const DIAS = [
   {tono:"info", texto:"Viking Scuba os recoge en el alojamiento. Confirmadles la dirección exacta del Plus Life."}
  ],
  bloques:[
-  {id:"d4-b1", tipo:"plan", estado:"confirmado", hora:"10:00", titulo:"Bucear con Viking Scuba",
+  {id:"d4-b1", cat:"mar", tipo:"plan", estado:"confirmado", hora:"10:00", titulo:"Bucear con Viking Scuba",
    opciones:[{id:"d4-b1-o1", nombre:"Viking Scuba Kabira", desc:"Reservado. Vienen a buscaros al alojamiento. Bucean en la zona de Kabira, que es donde se ven las mantas.",
     lugar:{nombre:"Viking Scuba Kabira", lat:24.4609159, lng:124.1379931},
     datos:"Recogida 10:00 · reservado · 4,9★ (145)",
     avisos:["Grupos muy pequeños. Prestan material y llevan comida entre inmersiones."]}]},
   {id:"d4-b2", tipo:"comida", estado:"pendiente", hora:"14:00", titulo:"Comer",
    avisos:["El itinerario dice «Spam Sushi». No he podido verificar ningún sitio con ese nombre en Ishigaki: dime a qué te referías y lo añado."]},
-  {id:"d4-b3", tipo:"plan", estado:"pendiente", hora:"20:00", titulo:"Salir a beber sake",
+  {id:"d4-b3", cat:"visita", tipo:"plan", estado:"pendiente", hora:"20:00", titulo:"Salir a beber sake",
    opciones:[
     {id:"d4-b3-o1", nombre:"URA73 BAL", desc:"Terraza junto al puerto, muy barato y abre hasta las 2. Domingo abierto.",
      lugar:{nombre:"URA73 BAL", lat:24.3386174, lng:124.1578788}, datos:"4,8★ · hasta las 02:00"},
@@ -682,7 +766,7 @@ const DIAS = [
   prediccion:{id:"d4-p", texto:"¿Veréis manta hoy?", opciones:["Sí","No"], resuelve:"d5"}
  }},
 
-{id:"d5", fecha:"2026-11-02", diaNum:5, isla:"Ishigaki", tz:"+09:00", grupos:["A"],
+{id:"d5", coords:[24.3471,124.1602], fecha:"2026-11-02", diaNum:5, isla:"Ishigaki", tz:"+09:00", grupos:["A"],
  titular:"Snorkel y playa",
  alojamientoId:"pluslife-ishigaki",
  avisos:[
@@ -690,11 +774,11 @@ const DIAS = [
   {tono:"info", texto:"El itinerario dice «ver la playa bonita» pero no cuál. Dime el nombre y la pongo con su enlace a mapas."}
  ],
  bloques:[
-  {id:"d5-b1", tipo:"plan", estado:"confirmado", hora:"10:00", titulo:"Snorkel con Prime Scuba",
+  {id:"d5-b1", cat:"mar", tipo:"plan", estado:"confirmado", hora:"10:00", titulo:"Snorkel con Prime Scuba",
    opciones:[{id:"d5-b1-o1", nombre:"Prime Scuba Ishigaki", desc:"Reservado. Vienen a buscaros. Salen en barco a varios puntos y dan comida a bordo.",
     lugar:{nombre:"Prime Scuba Ishigaki", lat:24.336195, lng:124.185868},
     datos:"Recogida 10:00 · reservado · 5,0★ (848)"}]},
-  {id:"d5-b2", tipo:"plan", estado:"sinDecidir", hora:"16:00", titulo:"Ir a la playa",
+  {id:"d5-b2", cat:"visita", tipo:"plan", estado:"sinDecidir", hora:"16:00", titulo:"Ir a la playa",
    opciones:[{id:"d5-b2-o1", nombre:"Por decidir", desc:"Falta saber a cuál queréis ir. Dímelo y la añado con coordenadas y cómo llegar."}]},
   {id:"d5-b3", tipo:"comida", estado:"pendiente", hora:"20:00", titulo:"Cenar"}
  ],
@@ -710,7 +794,7 @@ const DIAS = [
   prediccion:{id:"d5-p", texto:"¿Quién será el primero en caer del sake esta noche?", opciones:["Nacho","Laura","Álvaro","Cris"], resuelve:"d6"}
  }},
 
-{id:"d6", fecha:"2026-11-03", diaNum:6, isla:"Ishigaki → Osaka", tz:"+09:00", grupos:["A","B"],
+{id:"d6", coords:[24.3471,124.1602], fecha:"2026-11-03", diaNum:6, isla:"Ishigaki → Osaka", tz:"+09:00", grupos:["A","B"],
  titular:"Última excursión y reencuentro en Osaka",
  avisos:[
   {tono:"alerta", texto:"<b>Hoy se juntan los ocho en Osaka.</b> Faltan por añadir los vuelos de Borja, María, Carmen y Gonzalo, y dónde dormís todos esta noche."},
@@ -718,7 +802,7 @@ const DIAS = [
   {tono:"info", texto:"Elegid una sola excursión: con el vuelo a las 20:05 y el trayecto al aeropuerto, no da para dos."}
  ],
  bloques:[
-  {id:"d6-b1", tipo:"plan", estado:"sinDecidir", hora:"10:00", titulo:"Excursión por Ishigaki",
+  {id:"d6-b1", cat:"visita", tipo:"plan", estado:"sinDecidir", hora:"10:00", titulo:"Excursión por Ishigaki",
    opciones:[
     {id:"d6-b1-o1", nombre:"Taketomi", desc:"Ferry de 20 minutos a una isla de calles de arena y casas tradicionales de tejado rojo. Es la opción con más contenido y la que más tiempo come.",
      datos:"Ferry ~2.000 ¥ · 20 min", avisos:["Confirmad la hora del último ferry de vuelta antes de ir."]},
@@ -733,7 +817,7 @@ const DIAS = [
    vuelo:{numero:"NU86", localizador:"NU86", desde:"ISG", hasta:"KIX",
           desdeNom:"Ishigaki", hastaNom:"Osaka Kansai",
           salida:"2026-11-03T20:05:00+09:00", llegada:"2026-11-03T22:15:00+09:00"}},
-  {id:"d6-b3", tipo:"plan", estado:"pendiente", hora:"22:30", titulo:"Reencuentro con los otros cuatro",
+  {id:"d6-b3", cat:"visita", tipo:"plan", estado:"pendiente", hora:"22:30", titulo:"Reencuentro con los otros cuatro",
    avisos:["Faltan sus vuelos y el alojamiento de esta noche."]}
  ],
  comida:{comida:{sugerencias:["is-sunny","is-arun"], nota:"Martes. ARUN abre y hay que reservar por su web."}},
@@ -747,19 +831,19 @@ const DIAS = [
  }},
 
 /* --- Días por planificar: añade bloques y quita "porPlanificar" --- */
-{id:"d7",  fecha:"2026-11-04", diaNum:7,  isla:"Koyasan", tz:"+09:00", grupos:["A","B"], porPlanificar:true, titular:"Koyasan",
+{id:"d7",  coords:[34.2130,135.5850], fecha:"2026-11-04", diaNum:7,  isla:"Koyasan", tz:"+09:00", grupos:["A","B"], porPlanificar:true, titular:"Koyasan",
  avisos:[{tono:"atencion", texto:"Desde Osaka son 2-3 h en tren y funicular. Llegasteis anoche a las 22:15: hay que decidir a qué hora se sale."}]},
-{id:"d8",  fecha:"2026-11-05", diaNum:8,  isla:"Kioto", tz:"+09:00", grupos:["A","B"], porPlanificar:true, titular:"Kioto"},
-{id:"d9",  fecha:"2026-11-06", diaNum:9,  isla:"Kioto", tz:"+09:00", grupos:["A","B"], porPlanificar:true, titular:"Kioto"},
-{id:"d10", fecha:"2026-11-07", diaNum:10, isla:"Valle de Kiso", tz:"+09:00", grupos:["A","B"], porPlanificar:true, titular:"Valle de Kiso",
+{id:"d8",  coords:[35.0116,135.7681], fecha:"2026-11-05", diaNum:8,  isla:"Kioto", tz:"+09:00", grupos:["A","B"], porPlanificar:true, titular:"Kioto"},
+{id:"d9",  coords:[35.0116,135.7681], fecha:"2026-11-06", diaNum:9,  isla:"Kioto", tz:"+09:00", grupos:["A","B"], porPlanificar:true, titular:"Kioto"},
+{id:"d10", coords:[35.7300,137.6000], fecha:"2026-11-07", diaNum:10, isla:"Valle de Kiso", tz:"+09:00", grupos:["A","B"], porPlanificar:true, titular:"Valle de Kiso",
  avisos:[{tono:"info", texto:"🎂 Hoy es el cumpleaños de Laura."}]},
-{id:"d11", fecha:"2026-11-08", diaNum:11, isla:"Tokio", tz:"+09:00", grupos:["A","B"], porPlanificar:true, titular:"Tokio"},
-{id:"d12", fecha:"2026-11-09", diaNum:12, isla:"Tokio", tz:"+09:00", grupos:["A","B"], porPlanificar:true, titular:"Tokio"},
-{id:"d13", fecha:"2026-11-10", diaNum:13, isla:"Tokio", tz:"+09:00", grupos:["A","B"], porPlanificar:true, titular:"Tokio"},
-{id:"d14", fecha:"2026-11-11", diaNum:14, isla:"Tokio", tz:"+09:00", grupos:["A","B"], porPlanificar:true, titular:"Tokio"},
-{id:"d15", fecha:"2026-11-12", diaNum:15, isla:"Tokio", tz:"+09:00", grupos:["A","B"], porPlanificar:true, titular:"Tokio"},
-{id:"d16", fecha:"2026-11-13", diaNum:16, isla:"Tokio", tz:"+09:00", grupos:["A","B"], porPlanificar:true, titular:"Tokio"},
-{id:"d17", fecha:"2026-11-14", diaNum:17, isla:"Vuelta a Madrid", tz:"+09:00", grupos:["A","B"], porPlanificar:true, titular:"Vuelta a Madrid",
+{id:"d11", coords:[35.6762,139.6503], fecha:"2026-11-08", diaNum:11, isla:"Tokio", tz:"+09:00", grupos:["A","B"], porPlanificar:true, titular:"Tokio"},
+{id:"d12", coords:[35.6762,139.6503], fecha:"2026-11-09", diaNum:12, isla:"Tokio", tz:"+09:00", grupos:["A","B"], porPlanificar:true, titular:"Tokio"},
+{id:"d13", coords:[35.6762,139.6503], fecha:"2026-11-10", diaNum:13, isla:"Tokio", tz:"+09:00", grupos:["A","B"], porPlanificar:true, titular:"Tokio"},
+{id:"d14", coords:[35.6762,139.6503], fecha:"2026-11-11", diaNum:14, isla:"Tokio", tz:"+09:00", grupos:["A","B"], porPlanificar:true, titular:"Tokio"},
+{id:"d15", coords:[35.6762,139.6503], fecha:"2026-11-12", diaNum:15, isla:"Tokio", tz:"+09:00", grupos:["A","B"], porPlanificar:true, titular:"Tokio"},
+{id:"d16", coords:[35.6762,139.6503], fecha:"2026-11-13", diaNum:16, isla:"Tokio", tz:"+09:00", grupos:["A","B"], porPlanificar:true, titular:"Tokio"},
+{id:"d17", coords:[35.6762,139.6503], fecha:"2026-11-14", diaNum:17, isla:"Vuelta a Madrid", tz:"+09:00", grupos:["A","B"], porPlanificar:true, titular:"Vuelta a Madrid",
  avisos:[{tono:"alerta", texto:"<b>Los dos vuelos de vuelta están sin reservar.</b> Falta saber quién va en cada uno y desde qué aeropuerto."}]}
 ];
 
@@ -844,7 +928,9 @@ let estado = {
   retos:    Guardar.leer("retos", {}),
   predi:    Guardar.leer("predi", {}),
   visitas:  Guardar.leer("visitas", []),
-  filtro:   {contexto:"todo", antojo:"todo"}
+  filtro:   {contexto:"todo", antojo:"todo"},
+  abiertos: {},
+  seg:      "maleta"
 };
 
 /* ---------- Utilidades de fecha ---------- */
@@ -983,6 +1069,113 @@ function pintaOpcion(bloqueId, o){
   </button>`;
 }
 
+
+/* ---------- Categorías: qué es cada cosa ---------- */
+const CATS = {
+  vuelo:    {nom:"Vuelo",    ic:"✈"},
+  traslado: {nom:"Traslado", ic:"🚌"},
+  comida:   {nom:"Comida",   ic:"🍜"},
+  mar:      {nom:"Mar",      ic:"🤿"},
+  visita:   {nom:"Visita",   ic:"⛩"},
+  plan:     {nom:"Plan",     ic:"◆"}
+};
+function catDe(b){
+  if(b.cat && CATS[b.cat]) return b.cat;
+  if(b.tipo==="transporte") return "vuelo";
+  if(b.tipo==="traslado")   return "traslado";
+  if(b.tipo==="comida")     return "comida";
+  return "plan";
+}
+/* Qué se ve sin desplegar: una línea corta y nada más */
+function resumenDe(b){
+  if(b.vuelo) return b.vuelo.desde+" → "+b.vuelo.hasta;
+  if(b.opciones && b.opciones.length>1) return b.opciones.length+" opciones";
+  if(b.opciones && b.opciones.length===1) return b.opciones[0].nombre;
+  return "";
+}
+
+/* ---------- Tiempo (Open-Meteo: sin clave y sin backend) ---------- */
+const CIELO = {0:["Despejado","☀️"],1:["Casi despejado","🌤"],2:["Nubes y claros","⛅️"],3:["Nublado","☁️"],
+ 45:["Niebla","🌫"],48:["Niebla","🌫"],51:["Llovizna","🌦"],53:["Llovizna","🌦"],55:["Llovizna","🌦"],
+ 61:["Lluvia floja","🌧"],63:["Lluvia","🌧"],65:["Lluvia fuerte","🌧"],
+ 80:["Chubascos","🌦"],81:["Chubascos","🌦"],82:["Chubascos fuertes","⛈"],
+ 95:["Tormenta","⛈"],96:["Tormenta","⛈"],99:["Tormenta","⛈"]};
+/* Si nunca se ha bajado nada, al menos la media de la época */
+const CLIMA_TIPICO = {
+  "Kume-jima":"24-27° de media a finales de octubre. Agua a unos 26°.",
+  "Ishigaki":"25-27° de media a principios de noviembre. Agua a unos 27°.",
+  "Kioto":"10-18° en noviembre.", "Tokio":"10-18° en noviembre.",
+  "Valle de Kiso":"4-15° en noviembre, frío de montaña.", "Koyasan":"3-13° en noviembre, frío."
+};
+
+function tiempoGuardado(d){ return Guardar.leer("tiempo:"+d.fecha, null); }
+
+async function bajaTiempo(d){
+  if(!d.coords || !navigator.onLine) return;
+  const [la,lo] = d.coords;
+  const u = `https://api.open-meteo.com/v1/forecast?latitude=${la}&longitude=${lo}`
+    + `&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_probability_max`
+    + `&timezone=auto&start_date=${d.fecha}&end_date=${d.fecha}`;
+  try{
+    const r = await fetch(u);
+    const j = await r.json();
+    if(!j.daily || !j.daily.time || !j.daily.time.length) return;
+    Guardar.escribir("tiempo:"+d.fecha, {
+      max:Math.round(j.daily.temperature_2m_max[0]),
+      min:Math.round(j.daily.temperature_2m_min[0]),
+      cod:j.daily.weather_code[0],
+      lluvia:j.daily.precipitation_probability_max[0],
+      cuando:Date.now()
+    });
+    if(estado.vista==="hoy") pintaHoy();
+  }catch(e){}
+}
+function haceCuanto(ms){
+  const m = Math.round((Date.now()-ms)/60000);
+  if(m<60) return "hace "+m+" min";
+  const h = Math.round(m/60);
+  if(h<24) return "hace "+h+" h";
+  return "hace "+Math.round(h/24)+" días";
+}
+
+/* ---------- Cajas de tiempo y cama ---------- */
+function pintaCajas(d){
+  const t = tiempoGuardado(d);
+  let caja1;
+  if(t){
+    const [txt,em] = CIELO[t.cod] || ["—","·"];
+    caja1 = `<div class="caja tiempo">
+      <div class="eti">tiempo</div>
+      <div><div class="gordo">${em} ${t.max}°</div>
+      <div class="peq">${esc(txt)} · mín ${t.min}°${t.lluvia!=null?` · ${t.lluvia}% lluvia`:""}</div></div>
+      <div class="peq ${Date.now()-t.cuando>21600000?"viejo":""}">Actualizado ${haceCuanto(t.cuando)}</div>
+    </div>`;
+  } else {
+    const isla = Object.keys(CLIMA_TIPICO).find(k=>d.isla.includes(k.split("-")[0].split(" ")[0]));
+    caja1 = `<div class="caja tiempo">
+      <div class="eti">tiempo</div>
+      <div><div class="gordo" style="font-size:19px">Sin previsión</div>
+      <div class="peq">${esc(isla?CLIMA_TIPICO[isla]:"Enciende los datos un momento y se guarda para consultarla luego sin conexión.")}</div></div>
+      <div class="peq">Media de la época</div>
+    </div>`;
+  }
+
+  const al = ALOJ[d.alojamientoId];
+  const caja2 = al
+    ? `<button class="caja cama" data-abre="${esc(mapaApple(al.nombre,al.lat,al.lng))}">
+        <div class="eti">esta noche</div>
+        <div><div class="nom">${esc(al.nombre)}</div>
+        <div class="peq">${esc(al.dir.split(",")[0])}</div></div>
+        <div class="peq" style="color:var(--papel)">Abrir en mapas →</div>
+      </button>`
+    : `<div class="caja cama">
+        <div class="eti">esta noche</div>
+        <div><div class="nom" style="color:var(--ambar)">Sin alojamiento</div>
+        <div class="peq">Todavía no está puesto dónde dormís este día.</div></div>
+      </div>`;
+  return `<div class="cajas">${caja1}${caja2}</div>`;
+}
+
 /* ---------- VISTA: HOY ---------- */
 function pintaHoy(){
   const d = diaActivo();
@@ -998,6 +1191,8 @@ function pintaHoy(){
     <div class="centro">${hoy?"HOY · ":""}${esc(fechaLarga(d.fecha).toUpperCase())}</div>
     <button class="bt" ${idx===DIAS.length-1?"disabled":""} data-dia="${idx<DIAS.length-1?DIAS[idx+1].id:""}">›</button>
   </div>`;
+
+  h += pintaCajas(d);
 
   if(fuera) h += pintaAviso({tono:"info", texto:`Este tramo no es tuyo: ${esc(d.isla)} lo hacen Nacho, Laura, Álvaro y Cris. Tú te unes el 3 de noviembre en Osaka.`});
   if(d.porPlanificar) h += pintaAviso({tono:"atencion", texto:"<b>Día por planificar.</b> Todavía no hay nada cargado para esta jornada."});
@@ -1022,25 +1217,46 @@ function pintaHoy(){
   if(d.bloques && d.bloques.length){
     h += `<div class="seccion"><h2>El día</h2><div class="regla"></div></div><div class="linea">`;
     let puesta = false;
+    const sigId = hoy ? (d.bloques.filter(b=>b.hora && minutosDe(b.hora)>minAhora)[0]||{}).id : null;
     d.bloques.forEach(b=>{
       const m = minutosDe(b.hora);
       if(hoy && !puesta && m!=null && m>minAhora){
         h += `<div class="marca-ahora"><span>ahora</span></div>`; puesta = true;
       }
       const pasado = hoy && m!=null && m<=minAhora;
-      h += `<div class="bloque ${pasado?"pasado":""}" data-estado="${b.estado||""}">
-        <div class="hora">${esc(b.hora||"")}${b.horaFija===false?"<small>aprox</small>":""}</div>
+      const cat = catDe(b);
+      /* Abierto si el usuario lo abrió, o si es lo siguiente que toca hoy */
+      const abierto = (b.id in estado.abiertos) ? estado.abiertos[b.id] : (b.id===sigId);
+      const res = resumenDe(b);
+
+      h += `<div class="bloque ${pasado?"pasado":""} ${abierto?"abierto":""}" data-estado="${b.estado||""}" data-cat="${cat}">
+        <div class="hora">${esc(b.hora||"")}</div>
         <div class="cuerpo-bloque">
-          <div class="bloque-tit">${esc(b.titulo)}</div>
-          <div class="etiquetas">${etiquetaEstado(b.estado)}${b.tipo==="transporte"?'<span class="eti-p gris">vuelo</span>':""}</div>
+          <button class="cabecilla" data-plega="${b.id}" aria-expanded="${abierto}">
+            <span class="ic-cat">${CATS[cat].ic}</span>
+            <span class="med">
+              <span class="tit">${esc(b.titulo)}</span>
+              <span class="bajo">
+                <span class="cat-nom">${CATS[cat].nom}</span>
+                ${etiquetaEstado(b.estado)}
+                ${res?`<span class="pista">${esc(res)}</span>`:""}
+              </span>
+            </span>
+            <span class="flecha">›</span>
+          </button>`;
+
+      if(abierto){
+        h += `<div class="detalle">
           ${b.vuelo?pintaVuelo(b):""}
           ${b.vuelo?`<div class="acciones">
              <span class="bt fino">Localizador ${esc(b.vuelo.localizador)}</span>
              <button class="bt fino" data-ics="${b.id}">Añadir al calendario</button></div>`:""}
-          ${(b.avisos||[]).map(a=>`<div class="aviso atencion" style="margin:9px 0 0;font-size:13px">◆ <div>${esc(a)}</div></div>`).join("")}
+          ${(b.avisos||[]).map(a=>`<div class="aviso atencion" style="margin:9px 0 0;font-size:13px"><span class="ic">◆</span><div>${esc(a)}</div></div>`).join("")}
           ${b.opciones?`<div class="opciones">${b.opciones.map(o=>pintaOpcion(b.id,o)).join("")}</div>`:""}
-        </div>
-      </div>`;
+          ${(!b.vuelo && !b.opciones && !(b.avisos||[]).length)?`<div class="mini tenue">Sin detalles todavía.</div>`:""}
+        </div>`;
+      }
+      h += `</div></div>`;
     });
     if(hoy && !puesta) h += `<div class="marca-ahora"><span>ahora</span></div>`;
     h += `</div>`;
@@ -1086,10 +1302,6 @@ function pintaHoy(){
       </div>
     </div>`;
   }
-
-  /* Tiempo */
-  h += `<div class="seccion"><h2>Tiempo</h2><div class="regla"></div></div>
-  <div class="tarjeta mini tenue">Sin previsión guardada todavía. Cuando enciendas los datos, pulsa Sincronizar en Preparativos y se queda grabada para consultarla sin conexión.</div>`;
 
   /* Juego */
   if(d.juego) h += pintaJuego(d);
@@ -1153,7 +1365,7 @@ function pintaViaje(){
     const ds = t.dias.map(id=>DIAS.find(x=>x.id===id)).filter(Boolean);
     if(!ds.length) return;
     const f1 = ds[0].fecha.split("-"), f2 = ds[ds.length-1].fecha.split("-");
-    h += `<div class="tramo-tit"><h3>${esc(t.nombre)}</h3><span class="fechas">${+f1[2]}/${+f1[1]} — ${+f2[2]}/${+f2[1]}</span></div>`;
+    h += `<div class="tramo-tit t-${t.id}"><h3>${esc(t.nombre)}</h3><span class="fechas">${+f1[2]}/${+f1[1]} — ${+f2[2]}/${+f2[1]}</span></div>`;
     ds.forEach(d=>{
       const fuera = !d.grupos.includes(miGrupo);
       const gris = d.porPlanificar || fuera;
@@ -1233,53 +1445,88 @@ function pintaComida(){
   document.getElementById("v-comida").innerHTML = h;
 }
 
-/* ---------- VISTA: PREPARATIVOS ---------- */
+/* ---------- VISTA: GUÍA (con segmentos visibles) ---------- */
+const SEGS = [["maleta","Maleta"],["gestiones","Gestiones"],["costumbres","Costumbres"],["dinero","Dinero"],["ajustes","Ajustes"]];
+
 function pintaPrep(){
-  const grupos = [["maleta","Maleta"],["gestiones","Gestiones"],["lecturas","Antes de ir"]];
-  let h = "";
-  grupos.forEach(([k,nom])=>{
-    const items = PREP[k];
+  let h = `<div class="segs">${SEGS.map(([v,n])=>{
+    let extra = "";
+    if(v==="maleta"||v==="gestiones"){
+      const it = PREP[v]; const hechos = it.filter(i=>estado.checks[i.id]).length;
+      extra = ` ${hechos}/${it.length}`;
+    }
+    return `<button class="seg" aria-current="${estado.seg===v}" data-seg="${v}">${n}${extra}</button>`;
+  }).join("")}</div>`;
+
+  if(estado.seg==="maleta" || estado.seg==="gestiones"){
+    const k = estado.seg, items = PREP[k];
     const hechos = items.filter(i=>estado.checks[i.id]).length;
-    h += `<div class="seccion"><h2>${nom}</h2><div class="regla"></div><span class="mono mini tenue">${hechos}/${items.length}</span></div>`;
+    h += `<div class="seccion"><span class="cuenta-sec">${hechos} de ${items.length}</span>
+      <h2>${k==="maleta"?"Qué meter en la maleta":"Qué hay que dejar hecho"}</h2><div class="regla"></div></div>`;
     items.forEach(i=>{
       h += `<button class="check" aria-pressed="${!!estado.checks[i.id]}" data-check="${i.id}">
         <span class="caja">${estado.checks[i.id]?"✓":""}</span>
         <span class="lab">${esc(i.t)}${i.n?`<em>${esc(i.n)}</em>`:""}</span></button>`;
     });
-  });
+  }
 
-  h += `<div class="seccion"><h2>Calendario</h2><div class="regla"></div></div>
-  <div class="tarjeta">
-    <div class="mini">Descarga todo el viaje al calendario del iPhone de una vez. Las alarmas saltan aunque estés en modo avión, que es la razón por la que el aviso va por aquí y no por notificación.</div>
-    <div class="acciones"><button class="bt primario" data-icsTodo="1">Descargar el calendario del viaje</button></div>
-  </div>`;
+  if(estado.seg==="costumbres"){
+    h += `<div class="seccion"><h2>Cómo funcionan las cosas allí</h2><div class="regla"></div></div>`;
+    PREP.lecturas.forEach(i=>{
+      h += `<div class="tarjeta" style="margin-bottom:8px">
+        <b style="font-size:15.5px">${esc(i.t)}</b>
+        ${i.n?`<div class="mini tenue" style="margin-top:4px">${esc(i.n)}</div>`:""}</div>`;
+    });
+    h += `<div class="seccion"><h2>Cómo viajáis</h2><div class="regla"></div></div>
+    <div class="tarjeta">
+      ${PREFS.provisional?`<div class="mini" style="color:var(--ambar);margin-bottom:9px">◆ Provisionales: me las inventé yo para tener algo. Cámbialas.</div>`:""}
+      <div class="mini"><b>Ritmo.</b> ${esc(PREFS.ritmo)}</div>
+      <div class="mini" style="margin-top:7px"><b>Presupuesto.</b> ${esc(PREFS.presupuesto)}</div>
+      <div class="mini" style="margin-top:7px"><b>Imprescindibles.</b> ${PREFS.imprescindibles.map(esc).join(" · ")}</div>
+      <div class="mini" style="margin-top:7px"><b>Vetos.</b> ${PREFS.vetos.map(esc).join(" · ")}</div>
+    </div>`;
+  }
 
-  h += `<div class="seccion"><h2>Dinero</h2><div class="regla"></div></div>
-  <div class="tarjeta">
-    <div class="mini tenue">1 ¥ = ${YEN_EUR} €. La propina está prohibida.</div>
-    <div class="conversor">
-      <input id="yen" type="number" inputmode="numeric" placeholder="Yenes" value="3000">
-      <span class="res" id="eur">${aEuros(3000)}</span>
+  if(estado.seg==="dinero"){
+    h += `<div class="seccion"><h2>Yenes a euros</h2><div class="regla"></div></div>
+    <div class="tarjeta">
+      <div class="conversor">
+        <input id="yen" type="number" inputmode="numeric" placeholder="Yenes" value="3000">
+        <span class="res" id="eur">${aEuros(3000)}</span>
+      </div>
+      <div class="mini tenue" style="margin-top:10px">1 ¥ = ${YEN_EUR} €. La propina está prohibida: no se deja nunca.</div>
     </div>
-  </div>`;
+    <div class="seccion"><h2>De referencia</h2><div class="regla"></div></div>
+    <div class="tarjeta">
+      ${[[150,"Autobús del aeropuerto en Kume"],[540,"Autobús del aeropuerto en Ishigaki"],
+         [2000,"Ferry a Taketomi"],[3000,"Cena de izakaya por cabeza"],[3400,"Taxi al hotel en Kume"]]
+        .map(([y,q])=>`<div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--linea)">
+          <span class="mini">${esc(q)}</span><span class="mono mini" style="color:var(--ambar);white-space:nowrap">${y.toLocaleString("es-ES")} ¥ · ${aEuros(y)}</span></div>`).join("")}
+    </div>`;
+  }
 
-  h += `<div class="seccion"><h2>Contenido</h2><div class="regla"></div></div>
-  <div class="tarjeta">
-    <div class="mini tenue">Versión ${VERSION} guardada en el móvil. ${SYNC_URL?"Enciende los datos y pulsa para bajar la última.":"Aún no hay dirección de sincronización configurada."}</div>
-    <div class="acciones">
-      <button class="bt" data-sync="1" ${SYNC_URL?"":"disabled"}>Sincronizar</button>
-      <button class="bt fino" data-perfil="1">Cambiar de persona</button>
+  if(estado.seg==="ajustes"){
+    const yo = GENTE.find(g=>g.id===estado.perfil);
+    h += `<div class="seccion"><h2>Calendario</h2><div class="regla"></div></div>
+    <div class="tarjeta">
+      <div class="mini">Todo el viaje al calendario del iPhone de una vez. Las alarmas suenan en modo avión; las notificaciones normales, no.</div>
+      <div class="acciones"><button class="bt primario" data-ics-todo="1">Descargar el calendario del viaje</button></div>
     </div>
-  </div>`;
 
-  h += `<div class="seccion"><h2>Preferencias del grupo</h2><div class="regla"></div></div>
-  <div class="tarjeta">
-    ${PREFS.provisional?`<div class="mini" style="color:var(--ambar);margin-bottom:9px">◆ Provisionales: me las inventé yo para tener algo. Cámbialas.</div>`:""}
-    <div class="mini"><b>Ritmo.</b> ${esc(PREFS.ritmo)}</div>
-    <div class="mini" style="margin-top:7px"><b>Presupuesto.</b> ${esc(PREFS.presupuesto)}</div>
-    <div class="mini" style="margin-top:7px"><b>Imprescindibles.</b> ${PREFS.imprescindibles.map(esc).join(" · ")}</div>
-    <div class="mini" style="margin-top:7px"><b>Vetos.</b> ${PREFS.vetos.map(esc).join(" · ")}</div>
-  </div>`;
+    <div class="seccion"><h2>Quién eres</h2><div class="regla"></div></div>
+    <div class="tarjeta">
+      <div class="mini">Ahora mismo: <b>${esc(yo?yo.nombre:"sin elegir")}</b></div>
+      <div class="acciones"><button class="bt" data-perfil="1">Cambiar de persona</button></div>
+    </div>
+
+    <div class="seccion"><h2>Contenido</h2><div class="regla"></div></div>
+    <div class="tarjeta">
+      <div class="mini tenue">Versión ${VERSION}, guardada en este móvil.</div>
+      ${SYNC_URL
+        ? `<div class="acciones"><button class="bt" data-sync="1">Buscar una versión más nueva</button></div>`
+        : `<div class="mini" style="color:var(--ambar);margin-top:6px">◆ Sincronización desactivada: falta poner la dirección en <span class="mono">SYNC_URL</span>. Hasta entonces la app usa siempre la copia que lleva dentro.</div>`}
+    </div>`;
+  }
 
   document.getElementById("v-prep").innerHTML = h;
 }
@@ -1346,7 +1593,7 @@ function pintaCab(){
 }
 
 /* ---------- Navegación ---------- */
-const TABS = [["hoy","Hoy","◐"],["viaje","Viaje","≡"],["comida","Comer","🍜"],["prep","Listas","☑"],["juego","Juego","◆"]];
+const TABS = [["hoy","Hoy","◐"],["viaje","Viaje","≡"],["comida","Comer","🍜"],["prep","Guía","☑"],["juego","Juego","◆"]];
 function pintaBarra(){
   document.getElementById("barra").innerHTML = TABS.map(([id,n,g])=>
     `<button class="tab" data-tab="${id}" ${estado.vista===id?'aria-current="page"':""}>
@@ -1362,7 +1609,7 @@ function ir(v){
 }
 function render(){
   pintaCab();
-  if(estado.vista==="hoy") pintaHoy();
+  if(estado.vista==="hoy"){ pintaHoy(); bajaTiempo(diaActivo()); }
   if(estado.vista==="viaje") pintaViaje();
   if(estado.vista==="comida") pintaComida();
   if(estado.vista==="prep") pintaPrep();
@@ -1378,7 +1625,7 @@ function pidePerfil(){
 
 /* ---------- Un solo oyente para todo ---------- */
 document.addEventListener("click", e=>{
-  const t = e.target.closest("[data-tab],[data-dia],[data-elige],[data-check],[data-quiz],[data-reto],[data-predi],[data-fc],[data-fa],[data-abre],[data-ics],[data-icsTodo],[data-sync],[data-perfil],[data-yo]");
+  const t = e.target.closest("[data-tab],[data-dia],[data-elige],[data-check],[data-quiz],[data-reto],[data-predi],[data-fc],[data-fa],[data-plega],[data-seg],[data-abre],[data-ics],[data-ics-todo],[data-sync],[data-perfil],[data-yo]");
   if(!t) return;
   const d = t.dataset;
 
@@ -1386,7 +1633,7 @@ document.addEventListener("click", e=>{
   if(d.tab){ ir(d.tab); return; }
   if(d.yo){ estado.perfil = d.yo; Guardar.escribir("perfil", d.yo); document.getElementById("velo").hidden = true; render(); return; }
   if(d.perfil){ pidePerfil(); return; }
-  if(d.dia){ estado.diaVisto = d.dia; ir("hoy"); return; }
+  if(d.dia){ estado.diaVisto = d.dia; estado.abiertos = {}; ir("hoy"); bajaTiempo(diaActivo()); return; }
   if(d.elige){
     const [b,o] = d.elige.split("|");
     estado.elegidas[b] = (estado.elegidas[b]===o) ? null : o;
@@ -1396,6 +1643,12 @@ document.addEventListener("click", e=>{
   if(d.reto){ estado.retos[d.reto] = !estado.retos[d.reto]; Guardar.escribir("retos", estado.retos); render(); return; }
   if(d.quiz){ const [id,i] = d.quiz.split("|"); estado.quiz[id] = +i; Guardar.escribir("quiz", estado.quiz); render(); return; }
   if(d.predi){ const [id,i] = d.predi.split("|"); estado.predi[id] = +i; Guardar.escribir("predi", estado.predi); render(); return; }
+  if(d.plega){
+    const sig = document.querySelector(`[data-plega="${d.plega}"]`);
+    estado.abiertos[d.plega] = !(sig && sig.getAttribute("aria-expanded")==="true");
+    pintaHoy(); return;
+  }
+  if(d.seg){ estado.seg = d.seg; pintaPrep(); window.scrollTo(0,0); return; }
   if(d.fc){ estado.filtro.contexto = d.fc; pintaComida(); return; }
   if(d.fa){ estado.filtro.antojo = d.fa; pintaComida(); return; }
   if(d.icsTodo){ bajarIcs(icsDelViaje(), "viaje-japon.ics"); return; }
