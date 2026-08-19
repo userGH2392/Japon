@@ -5,9 +5,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=1">
 <title>Ryukyu — viaje a Japón</title>
 <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="Ryukyu">
-<meta name="theme-color" content="#0C1626">
+<meta name="theme-color" content="#F6F1E6">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://api.open-meteo.com; base-uri 'self'; form-action 'none'">
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="apple-touch-icon" href="iconos/icono-180.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -15,60 +16,64 @@
 <link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho+B1:wght@600;800&family=Zen+Kaku+Gothic+New:wght@400;500;700&family=Roboto+Mono:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
 /* ============================================================
-   SISTEMA DE DISEÑO
-   Índigo ryukyuense (aizome) + acentos bingata.
-   El color no decora: codifica estado.
-     jade    = confirmado / hecho
-     ámbar   = pendiente de reservar / atención
-     coral   = sin decidir / alerta / ahora
+   SISTEMA DE DISEÑO — papel y tinta
+   Fondo de papel washi, tinta oscura, rojo hinomaru como único
+   acento de marca. El color sigue teniendo dos canales que no
+   se pisan:
+     · la franja izquierda dice QUÉ es (categoría)
+     · el punto del raíl y la etiqueta dicen CÓMO está (estado)
    ============================================================ */
 :root{
-  --tinta:#0C1626;
-  --tinta-2:#142338;
-  --tinta-3:#1B2E47;
-  --linea:#26405F;
-  --papel:#F2EDE0;
-  --tenue:#93A7BE;
-  --apagado:#5E7186;
-  --ambar:#F5B335;
-  --coral:#E2543A;
-  --jade:#3FB79A;
+  --papel:#F6F1E6;          /* fondo, papel cálido */
+  --carta:#FFFFFF;          /* tarjetas */
+  --tinta:#23262D;          /* texto principal */
+  --tenue:#7A7466;          /* texto secundario */
+  --linea:#E5DCC8;          /* bordes */
+  --rojo:#C7362F;           /* hinomaru: marca, "ahora", activo */
+  --jade:#1E7F5C;           /* estado: reservado */
+  --ambar:#A9741A;          /* estado: por reservar */
+  --c-vuelo:#2F6DB0;
+  --c-traslado:#7A4FB0;
+  --c-comida:#C2517A;
+  --c-mar:#0E8FA8;
+  --c-visita:#A4762A;
   --display:'Shippori Mincho B1',Georgia,serif;
   --cuerpo:'Zen Kaku Gothic New',-apple-system,BlinkMacSystemFont,'Helvetica Neue',sans-serif;
   --mono:'Roboto Mono',ui-monospace,SFMono-Regular,Menlo,monospace;
   --r:14px;
+  --sombra:0 1px 3px rgba(35,38,45,.07);
   --barra:calc(58px + env(safe-area-inset-bottom));
 }
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 html,body{margin:0;padding:0}
 body{
-  background:var(--tinta);
-  color:var(--papel);
+  background:var(--papel);
+  color:var(--tinta);
   font-family:var(--cuerpo);
-  font-size:16px;
-  line-height:1.5;
+  font-size:16px;line-height:1.5;
   -webkit-font-smoothing:antialiased;
   overscroll-behavior-y:none;
   padding-bottom:var(--barra);
 }
-button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer;padding:0}
 a{color:inherit}
-:focus-visible{outline:2px solid var(--ambar);outline-offset:2px;border-radius:6px}
+:focus-visible{outline:2px solid var(--rojo);outline-offset:2px;border-radius:6px}
 
 /* ---------- CABECERA ---------- */
 .cab{
   position:sticky;top:0;z-index:40;
-  background:rgba(12,22,38,.92);
+  background:rgba(246,241,230,.94);
   backdrop-filter:saturate(160%) blur(14px);
   -webkit-backdrop-filter:saturate(160%) blur(14px);
   border-bottom:1px solid var(--linea);
   padding:calc(env(safe-area-inset-top) + 10px) 16px 10px;
 }
 .cab-fila{display:flex;align-items:baseline;justify-content:space-between;gap:12px}
-.cab-tit{font-family:var(--display);font-weight:800;font-size:21px;line-height:1.15;letter-spacing:.01em}
+.cab-tit{font-family:var(--display);font-weight:800;font-size:21px;line-height:1.15}
+.cab-tit::before{content:"";display:inline-block;width:11px;height:11px;border-radius:50%;background:var(--rojo);margin-right:8px;vertical-align:1px}
 .cab-sub{font-family:var(--mono);font-size:11.5px;color:var(--tenue);letter-spacing:.06em;text-transform:uppercase;margin-top:3px}
 .relojes{font-family:var(--mono);font-size:11px;color:var(--tenue);text-align:right;line-height:1.5;white-space:nowrap}
-.relojes b{color:var(--papel);font-weight:500}
+.relojes b{color:var(--tinta);font-weight:500}
 
 /* ---------- ESTRUCTURA ---------- */
 .vista{display:none;padding:16px 16px 28px;max-width:640px;margin:0 auto}
@@ -76,84 +81,122 @@ a{color:inherit}
 @keyframes ent{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 
-.seccion{margin:26px 0 12px;display:flex;align-items:center;gap:10px}
-.seccion h2{font-family:var(--mono);font-size:11px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--tenue);margin:0}
-.seccion .regla{flex:1;height:1px;background:var(--linea)}
+.seccion{margin:30px 0 12px;display:block}
+.seccion h2{font-family:var(--display);font-size:20px;font-weight:800;color:var(--tinta);margin:0;line-height:1.15}
+.seccion .regla{display:block;height:3px;width:38px;background:var(--rojo);border-radius:2px;margin-top:7px}
+.seccion .cuenta-sec{float:right;font-family:var(--mono);font-size:11px;color:var(--tenue);margin-top:6px}
 
-.tarjeta{background:var(--tinta-2);border:1px solid var(--linea);border-radius:var(--r);padding:14px}
+.tarjeta{background:var(--carta);border:1px solid var(--linea);border-radius:var(--r);padding:14px;box-shadow:var(--sombra)}
 .tenue{color:var(--tenue)}
 .mono{font-family:var(--mono)}
 .mini{font-size:12.5px}
+.clamp2{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
 
 /* ---------- AVISOS ---------- */
 .aviso{
   display:flex;gap:10px;align-items:flex-start;
   border-radius:var(--r);padding:11px 13px;margin-bottom:10px;
-  font-size:14px;line-height:1.45;
-  border:1px solid;
+  font-size:14px;line-height:1.45;border:1px solid;text-align:left;width:100%;
 }
 .aviso .ic{font-size:15px;line-height:1.35;flex:0 0 auto}
-.aviso.alerta{background:rgba(226,84,58,.13);border-color:rgba(226,84,58,.45);color:#FFC9BC}
-.aviso.atencion{background:rgba(245,179,53,.12);border-color:rgba(245,179,53,.4);color:#FFDFA6}
-.aviso.info{background:var(--tinta-2);border-color:var(--linea);color:var(--tenue)}
-.aviso b{color:var(--papel)}
+.aviso.alerta{background:#FBEAE8;border-color:#EBC4C0;color:#8C2B25}
+.aviso.atencion{background:#FAF3E3;border-color:#EADFC2;color:#7A5A14}
+.aviso.info{background:var(--carta);border-color:var(--linea);color:var(--tenue)}
+.aviso b{color:inherit}
+.aviso .abrir-avisos{margin-left:auto;font-family:var(--mono);font-size:11px;font-weight:700;flex:0 0 auto}
 
 /* ---------- LO SIGUIENTE ---------- */
 .siguiente{
-  position:relative;overflow:hidden;
-  background:linear-gradient(155deg,#1A3050 0%,#142338 70%);
-  border:1px solid var(--linea);border-radius:18px;padding:16px;
+  position:relative;overflow:hidden;background:var(--carta);
+  border:1px solid var(--linea);border-radius:18px;padding:16px 16px 16px 19px;
+  box-shadow:var(--sombra);
 }
-.siguiente::before{content:"";position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--coral)}
-.siguiente .eti{font-family:var(--mono);font-size:10.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--coral);font-weight:700}
-.siguiente .qué{font-family:var(--display);font-weight:600;font-size:24px;line-height:1.2;margin:6px 0 2px}
+.siguiente::before{content:"";position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--rojo)}
+.siguiente .eti{font-family:var(--mono);font-size:10.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--rojo);font-weight:700}
+.siguiente .qué{font-family:var(--display);font-weight:800;font-size:23px;line-height:1.2;margin:6px 0 2px}
 .cuenta{font-family:var(--mono);font-size:13px;color:var(--ambar);font-weight:500}
 
-/* ---------- LÍNEA DEL DÍA (elemento firma) ---------- */
+/* ---------- CAJAS DE ARRIBA ---------- */
+.cajas{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-bottom:16px}
+.caja{
+  background:var(--carta);border:1px solid var(--linea);border-radius:14px;
+  padding:12px;min-height:96px;display:flex;flex-direction:column;justify-content:space-between;
+  text-align:left;width:100%;box-shadow:var(--sombra);
+}
+.caja .eti{font-family:var(--mono);font-size:9.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--tenue)}
+.caja .gordo{font-family:var(--display);font-size:26px;font-weight:800;line-height:1.05;margin-top:5px}
+.caja .peq{font-size:12px;line-height:1.35;color:var(--tenue);margin-top:3px}
+.caja.tiempo{background:linear-gradient(165deg,#EEF4F8,#FFFFFF)}
+.caja.cama{background:linear-gradient(165deg,#F5F0FA,#FFFFFF)}
+.caja .nom{font-size:14.5px;font-weight:700;line-height:1.25;margin-top:5px}
+.caja .viejo{color:var(--ambar)}
+.caja:active{transform:scale(.985)}
+
+/* ---------- RAÍL DEL DÍA ---------- */
 .linea{position:relative;padding-left:62px}
 .linea::before{content:"";position:absolute;left:52px;top:6px;bottom:14px;width:1px;background:var(--linea)}
 .bloque{position:relative;margin-bottom:14px}
 .bloque .hora{
-  position:absolute;left:-62px;top:12px;width:44px;text-align:right;
-  font-family:var(--mono);font-size:13px;font-weight:500;color:var(--papel);
+  position:absolute;left:-62px;top:14px;width:44px;text-align:right;
+  font-family:var(--mono);font-size:13px;font-weight:500;color:var(--tinta);
 }
-.bloque .hora small{display:block;font-size:9.5px;color:var(--tenue);letter-spacing:.08em;font-weight:400}
 .bloque::before{
-  content:"";position:absolute;left:-14px;top:18px;width:9px;height:9px;border-radius:50%;
-  background:var(--tinta);border:2px solid var(--tenue);
+  content:"";position:absolute;left:-14px;top:20px;width:9px;height:9px;border-radius:50%;
+  background:var(--papel);border:2px solid var(--tenue);z-index:1;
 }
 .bloque[data-estado="confirmado"]::before{border-color:var(--jade);background:var(--jade)}
-.bloque[data-estado="pendiente"]::before{border-color:var(--ambar)}
-.bloque[data-estado="sinDecidir"]::before{border-color:var(--coral)}
-.bloque.pasado{opacity:.42}
+.bloque[data-estado="pendiente"]::before{border-color:var(--ambar);background:var(--papel)}
+.bloque[data-estado="sinDecidir"]::before{border-color:var(--rojo);background:var(--papel)}
+.bloque.pasado{opacity:.45}
 .marca-ahora{position:relative;height:0;margin:0 0 14px}
-.marca-ahora::before{content:"";position:absolute;left:-14px;right:0;top:0;height:1px;background:var(--coral);opacity:.65}
+.marca-ahora::before{content:"";position:absolute;left:-14px;right:0;top:0;height:1px;background:var(--rojo);opacity:.55}
 .marca-ahora span{
   position:absolute;left:-62px;top:-8px;
   font-family:var(--mono);font-size:10px;font-weight:700;letter-spacing:.12em;
-  color:var(--coral);text-transform:uppercase;background:var(--tinta);padding-right:6px;
+  color:var(--rojo);text-transform:uppercase;background:var(--papel);padding-right:6px;
 }
 
-.cuerpo-bloque{background:var(--tinta-2);border:1px solid var(--linea);border-radius:var(--r);padding:13px 14px}
-.bloque-tit{font-weight:700;font-size:16.5px;line-height:1.3}
-.etiquetas{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
-.eti-p{
-  font-family:var(--mono);font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;
-  padding:3px 7px;border-radius:5px;border:1px solid;
+.cuerpo-bloque{
+  background:var(--carta);border:1px solid var(--linea);border-radius:var(--r);
+  padding:0;overflow:hidden;border-left:3px solid var(--linea);box-shadow:var(--sombra);
 }
-.eti-p.jade{color:var(--jade);border-color:rgba(63,183,154,.5);background:rgba(63,183,154,.1)}
-.eti-p.ambar{color:var(--ambar);border-color:rgba(245,179,53,.5);background:rgba(245,179,53,.1)}
-.eti-p.coral{color:var(--coral);border-color:rgba(226,84,58,.5);background:rgba(226,84,58,.1)}
-.eti-p.gris{color:var(--tenue);border-color:var(--linea)}
+.bloque[data-cat="vuelo"]    .cuerpo-bloque{border-left-color:var(--c-vuelo)}
+.bloque[data-cat="traslado"] .cuerpo-bloque{border-left-color:var(--c-traslado)}
+.bloque[data-cat="comida"]   .cuerpo-bloque{border-left-color:var(--c-comida)}
+.bloque[data-cat="mar"]      .cuerpo-bloque{border-left-color:var(--c-mar)}
+.bloque[data-cat="visita"]   .cuerpo-bloque{border-left-color:var(--c-visita)}
+
+.cabecilla{display:flex;align-items:center;gap:11px;width:100%;text-align:left;padding:13px 13px 13px 12px}
+.cabecilla .ic-cat{font-size:17px;line-height:1;flex:0 0 auto;width:22px;text-align:center}
+.cabecilla .med{flex:1;min-width:0}
+.cabecilla .tit{font-size:16px;font-weight:700;line-height:1.28;display:block}
+.cabecilla .bajo{display:flex;align-items:center;gap:7px;margin-top:5px;flex-wrap:wrap}
+.cat-nom{font-family:var(--mono);font-size:9.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--tenue)}
+.bloque[data-cat="vuelo"]    .cat-nom{color:var(--c-vuelo)}
+.bloque[data-cat="traslado"] .cat-nom{color:var(--c-traslado)}
+.bloque[data-cat="comida"]   .cat-nom{color:var(--c-comida)}
+.bloque[data-cat="mar"]      .cat-nom{color:var(--c-mar)}
+.bloque[data-cat="visita"]   .cat-nom{color:var(--c-visita)}
+.flecha{flex:0 0 auto;color:var(--tenue);font-size:13px;transition:transform .18s}
+.bloque.abierto .flecha{transform:rotate(90deg)}
+.detalle{padding:12px 13px 13px;border-top:1px solid var(--linea)}
+.pista{font-family:var(--mono);font-size:10.5px;color:var(--tenue);letter-spacing:.03em}
+
+.etiquetas{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.eti-p{font-family:var(--mono);font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:3px 7px;border-radius:5px;border:1px solid}
+.eti-p.jade{color:var(--jade);border-color:#BFDCCF;background:#EAF5F0}
+.eti-p.ambar{color:var(--ambar);border-color:#E6D3AC;background:#F9F2E1}
+.eti-p.coral{color:var(--rojo);border-color:#EBC4C0;background:#FBEAE8}
+.eti-p.gris{color:var(--tenue);border-color:var(--linea);background:var(--papel)}
 
 /* ---------- OPCIONES ---------- */
 .opciones{margin-top:11px;display:flex;flex-direction:column;gap:8px}
 .opcion{
   display:block;width:100%;text-align:left;
-  background:var(--tinta-3);border:1px solid var(--linea);border-radius:11px;padding:11px 12px;
+  background:var(--papel);border:1px solid var(--linea);border-radius:11px;padding:11px 12px;
   transition:border-color .15s,background .15s;
 }
-.opcion[aria-pressed="true"]{border-color:var(--jade);background:rgba(63,183,154,.11)}
+.opcion[aria-pressed="true"]{border-color:var(--jade);background:#EAF5F0}
 .opcion .on-marca{color:var(--jade);font-family:var(--mono);font-size:10px;font-weight:700;letter-spacing:.1em}
 .opcion h4{margin:0;font-size:15px;font-weight:700;line-height:1.3}
 .opcion p{margin:4px 0 0;font-size:13.5px;color:var(--tenue);line-height:1.45}
@@ -164,16 +207,16 @@ a{color:inherit}
 .bt{
   display:inline-flex;align-items:center;gap:6px;
   min-height:40px;padding:0 13px;border-radius:10px;
-  border:1px solid var(--linea);background:var(--tinta-3);
-  font-size:13.5px;font-weight:700;
+  border:1px solid var(--linea);background:var(--carta);
+  font-size:13.5px;font-weight:700;box-shadow:var(--sombra);
 }
 .bt:active{transform:scale(.97)}
-.bt.primario{background:var(--papel);color:#0C1626;border-color:var(--papel)}
-.bt.fino{min-height:34px;font-size:12.5px;font-weight:500;background:none}
+.bt.primario{background:var(--rojo);color:#fff;border-color:var(--rojo)}
+.bt.fino{min-height:34px;font-size:12.5px;font-weight:500;background:none;box-shadow:none}
 .bt[disabled]{opacity:.4}
 
 /* ---------- VUELO ---------- */
-.vuelo{display:flex;align-items:center;gap:12px;margin-top:10px}
+.vuelo{display:flex;align-items:center;gap:12px;margin-top:4px}
 .vuelo .pt{text-align:center;flex:0 0 auto}
 .vuelo .pt .cod{font-family:var(--mono);font-size:19px;font-weight:700;letter-spacing:.06em}
 .vuelo .pt .hr{font-family:var(--mono);font-size:13px;color:var(--ambar);margin-top:1px}
@@ -181,220 +224,11 @@ a{color:inherit}
 .vuelo .via{flex:1;position:relative;height:1px;background:var(--linea)}
 .vuelo .via span{
   position:absolute;left:50%;top:-9px;transform:translateX(-50%);
-  background:var(--tinta-2);padding:0 7px;font-family:var(--mono);font-size:10px;color:var(--tenue);
+  background:var(--carta);padding:0 7px;font-family:var(--mono);font-size:10px;color:var(--tenue);
 }
 
 /* ---------- VIAJE / TRAMOS ---------- */
-.tramo-tit{
-  display:flex;align-items:baseline;gap:9px;margin:22px 0 9px;
-}
-.tramo-tit h3{font-family:var(--display);font-size:19px;font-weight:600;margin:0}
-.tramo-tit .fechas{font-family:var(--mono);font-size:11px;color:var(--tenue);letter-spacing:.05em}
-.fila-dia{
-  display:flex;gap:12px;align-items:center;width:100%;text-align:left;
-  background:var(--tinta-2);border:1px solid var(--linea);border-radius:12px;
-  padding:11px 13px;margin-bottom:7px;
-}
-.fila-dia.gris{background:transparent;border-style:dashed;opacity:.62}
-.fila-dia.hoy{border-color:var(--coral);box-shadow:0 0 0 1px rgba(226,84,58,.35)}
-.fila-dia .num{
-  font-family:var(--display);font-size:23px;font-weight:800;line-height:1;
-  width:34px;flex:0 0 auto;text-align:center;color:var(--tenue);
-}
-.fila-dia.hoy .num{color:var(--coral)}
-.fila-dia .txt{flex:1;min-width:0}
-.fila-dia .txt b{display:block;font-size:15px;font-weight:700;line-height:1.3}
-.fila-dia .txt span{font-family:var(--mono);font-size:11px;color:var(--tenue);letter-spacing:.04em}
-.iconos-dia{font-size:13px;letter-spacing:2px;flex:0 0 auto;opacity:.85}
-
-/* ---------- COMIDA ---------- */
-.filtros{display:flex;gap:7px;overflow-x:auto;padding:2px 0 8px;-webkit-overflow-scrolling:touch;scrollbar-width:none}
-.filtros::-webkit-scrollbar{display:none}
-.chip{
-  flex:0 0 auto;padding:8px 13px;border-radius:999px;
-  border:1px solid var(--linea);background:var(--tinta-2);
-  font-size:13.5px;font-weight:500;white-space:nowrap;
-}
-.chip[aria-pressed="true"]{background:var(--papel);color:#0C1626;border-color:var(--papel);font-weight:700}
-.sitio{background:var(--tinta-2);border:1px solid var(--linea);border-radius:var(--r);padding:13px;margin-bottom:9px}
-.sitio h4{margin:0 0 2px;font-size:16px;font-weight:700;line-height:1.25}
-.sitio .jp{font-family:var(--mono);font-size:11.5px;color:var(--tenue)}
-.sitio p{margin:7px 0 0;font-size:13.5px;line-height:1.5;color:#CBD8E6}
-.sitio .meta{display:flex;flex-wrap:wrap;gap:9px;margin-top:8px;font-family:var(--mono);font-size:11.5px;color:var(--tenue)}
-.cerrado{color:var(--coral);font-weight:700}
-
-/* ---------- PREPARATIVOS ---------- */
-.check{
-  display:flex;gap:11px;align-items:flex-start;width:100%;text-align:left;
-  padding:11px 12px;border-radius:11px;border:1px solid var(--linea);
-  background:var(--tinta-2);margin-bottom:6px;
-}
-.check .caja{
-  flex:0 0 auto;width:21px;height:21px;border-radius:6px;
-  border:2px solid var(--tenue);margin-top:1px;
-  display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;
-}
-.check[aria-pressed="true"] .caja{background:var(--jade);border-color:var(--jade);color:#0C1626}
-.check[aria-pressed="true"] .lab{opacity:.5;text-decoration:line-through}
-.check .lab{font-size:14.5px;line-height:1.4}
-.check .lab em{display:block;font-style:normal;font-size:12.5px;color:var(--tenue);margin-top:2px}
-
-/* ---------- JUEGO ---------- */
-.juego{border:1px solid var(--linea);border-radius:18px;overflow:hidden;background:var(--tinta-2)}
-.juego-cab{
-  display:flex;align-items:center;justify-content:space-between;gap:10px;
-  padding:12px 14px;border-bottom:1px solid var(--linea);
-  background:linear-gradient(90deg,rgba(245,179,53,.1),transparent);
-}
-.juego-cab .t{font-family:var(--mono);font-size:10.5px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--ambar)}
-.racha{font-family:var(--mono);font-size:12px;color:var(--papel);font-weight:500}
-.juego-cuerpo{padding:14px}
-.dato{font-size:14.5px;line-height:1.55;color:#D8E2ED}
-.dato .fuente{display:block;font-family:var(--mono);font-size:10.5px;color:var(--tenue);margin-top:6px;letter-spacing:.03em}
-.quiz-op{
-  display:block;width:100%;text-align:left;padding:11px 13px;border-radius:11px;
-  border:1px solid var(--linea);background:var(--tinta-3);margin-bottom:7px;font-size:14.5px;
-}
-.quiz-op.ok{border-color:var(--jade);background:rgba(63,183,154,.15)}
-.quiz-op.mal{border-color:var(--coral);background:rgba(226,84,58,.13)}
-.insignias{display:grid;grid-template-columns:repeat(auto-fill,minmax(94px,1fr));gap:8px}
-.insignia{
-  border:1px solid var(--linea);border-radius:12px;padding:11px 8px;text-align:center;
-  background:var(--tinta-2);
-}
-.insignia.no{opacity:.32}
-.insignia .em{font-size:23px;display:block;line-height:1.2}
-.insignia .nm{font-size:11px;font-weight:700;margin-top:4px;line-height:1.25}
-
-/* ---------- BARRA INFERIOR ---------- */
-.barra{
-  position:fixed;left:0;right:0;bottom:0;z-index:50;
-  display:grid;grid-template-columns:repeat(5,1fr);
-  background:rgba(12,22,38,.96);
-  backdrop-filter:saturate(160%) blur(16px);
-  -webkit-backdrop-filter:saturate(160%) blur(16px);
-  border-top:1px solid var(--linea);
-  padding-bottom:env(safe-area-inset-bottom);
-}
-.tab{
-  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;
-  height:58px;color:var(--tenue);
-}
-.tab .g{font-size:19px;line-height:1}
-.tab .n{font-size:10px;font-weight:700;letter-spacing:.02em}
-.tab[aria-current="page"]{color:var(--papel)}
-.tab[aria-current="page"] .g{filter:none}
-.tab[aria-current="page"]::before{
-  content:"";position:absolute;margin-top:-52px;width:26px;height:2px;background:var(--coral);border-radius:2px;
-}
-
-/* ---------- ESTADO / OFFLINE ---------- */
-.sinred{
-  display:none;background:rgba(245,179,53,.14);border-bottom:1px solid rgba(245,179,53,.35);
-  color:#FFDFA6;font-size:12.5px;padding:7px 16px;text-align:center;
-}
-body.offline .sinred{display:block}
-
-/* ---------- MODAL PERFIL ---------- */
-.velo{
-  position:fixed;inset:0;z-index:90;background:rgba(6,12,22,.96);
-  display:flex;align-items:center;justify-content:center;padding:22px;
-}
-.velo[hidden]{display:none}
-.panel{width:100%;max-width:400px}
-.panel h2{font-family:var(--display);font-size:26px;font-weight:800;margin:0 0 6px;line-height:1.2}
-.panel p{color:var(--tenue);font-size:14px;margin:0 0 18px;line-height:1.5}
-.gente{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-.persona{
-  padding:14px 10px;border-radius:12px;border:1px solid var(--linea);background:var(--tinta-2);
-  font-size:15.5px;font-weight:700;text-align:center;
-}
-.persona small{display:block;font-family:var(--mono);font-size:10px;color:var(--tenue);font-weight:400;margin-top:3px;letter-spacing:.06em}
-
-/* ---------- CAMBIO DE DÍA ---------- */
-.selector{display:flex;align-items:center;gap:8px;margin-bottom:14px}
-.selector .bt{flex:0 0 auto}
-.selector .centro{flex:1;text-align:center;font-family:var(--mono);font-size:12px;color:var(--tenue);letter-spacing:.06em}
-.conversor{display:flex;gap:8px;align-items:center;margin-top:9px}
-.conversor input{
-  flex:1;min-width:0;background:var(--tinta-3);border:1px solid var(--linea);border-radius:10px;
-  color:var(--papel);font-family:var(--mono);font-size:16px;padding:10px 12px;
-}
-.conversor .res{font-family:var(--mono);font-size:16px;font-weight:700;color:var(--ambar);white-space:nowrap}
-
-/* ═══ CATEGORÍAS: el color de la franja izquierda dice QUÉ es.
-   El estado (reservado / por reservar / sin decidir) sigue viviendo
-   en el punto del raíl y en la etiqueta de texto. Dos canales distintos,
-   por posición, para que no se pisen. ═══ */
-:root{
-  --c-vuelo:#5FA8E0;
-  --c-traslado:#A98AD8;
-  --c-comida:#E58AA6;
-  --c-mar:#46C7DE;
-  --c-visita:#EDE3C8;
-}
-
-/* ---- Cabeceras de sección con mucho más peso ---- */
-.seccion{margin:30px 0 12px;display:block}
-.seccion h2{
-  font-family:var(--display);font-size:20px;font-weight:800;letter-spacing:0;
-  text-transform:none;color:var(--papel);margin:0;line-height:1.15;
-}
-.seccion .regla{display:block;height:3px;width:38px;background:var(--ambar);border-radius:2px;margin-top:7px}
-.seccion .cuenta-sec{float:right;font-family:var(--mono);font-size:11px;color:var(--tenue);margin-top:6px}
-
-/* ---- Dos cajas fijas arriba: tiempo y cama ---- */
-.cajas{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-bottom:16px}
-.caja{
-  background:var(--tinta-2);border:1px solid var(--linea);border-radius:14px;
-  padding:12px;min-height:96px;display:flex;flex-direction:column;justify-content:space-between;
-  text-align:left;width:100%;
-}
-.caja .eti{font-family:var(--mono);font-size:9.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--tenue)}
-.caja .gordo{font-family:var(--display);font-size:26px;font-weight:800;line-height:1.05;margin-top:5px}
-.caja .peq{font-size:12px;line-height:1.35;color:var(--tenue);margin-top:3px}
-.caja.tiempo{background:linear-gradient(160deg,#1B3A52,#142338)}
-.caja.cama{background:linear-gradient(160deg,#2A2C4E,#142338)}
-.caja .nom{font-size:14.5px;font-weight:700;line-height:1.25;margin-top:5px}
-.caja .viejo{color:var(--ambar)}
-
-/* ---- Tarjeta plegable del raíl ---- */
-.bloque .cuerpo-bloque{padding:0;overflow:hidden;border-left:3px solid var(--linea)}
-.bloque[data-cat="vuelo"]    .cuerpo-bloque{border-left-color:var(--c-vuelo)}
-.bloque[data-cat="traslado"] .cuerpo-bloque{border-left-color:var(--c-traslado)}
-.bloque[data-cat="comida"]   .cuerpo-bloque{border-left-color:var(--c-comida)}
-.bloque[data-cat="mar"]      .cuerpo-bloque{border-left-color:var(--c-mar)}
-.bloque[data-cat="visita"]   .cuerpo-bloque{border-left-color:var(--c-visita)}
-
-.cabecilla{
-  display:flex;align-items:center;gap:11px;width:100%;text-align:left;
-  padding:13px 13px 13px 12px;
-}
-.cabecilla .ic-cat{font-size:17px;line-height:1;flex:0 0 auto;width:22px;text-align:center}
-.cabecilla .med{flex:1;min-width:0}
-.cabecilla .tit{font-size:16px;font-weight:700;line-height:1.28}
-.cabecilla .bajo{display:flex;align-items:center;gap:7px;margin-top:5px;flex-wrap:wrap}
-.cat-nom{font-family:var(--mono);font-size:9.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--tenue)}
-.bloque[data-cat="vuelo"]    .cat-nom{color:var(--c-vuelo)}
-.bloque[data-cat="traslado"] .cat-nom{color:var(--c-traslado)}
-.bloque[data-cat="comida"]   .cat-nom{color:var(--c-comida)}
-.bloque[data-cat="mar"]      .cat-nom{color:var(--c-mar)}
-.flecha{flex:0 0 auto;color:var(--tenue);font-size:13px;transition:transform .18s}
-.bloque.abierto .flecha{transform:rotate(90deg)}
-.detalle{padding:0 13px 13px;border-top:1px solid var(--linea);padding-top:12px;margin:0 0 0 0}
-.pista{font-family:var(--mono);font-size:10.5px;color:var(--tenue);letter-spacing:.03em}
-
-/* ---- Segmentos de la pestaña Guía ---- */
-.segs{display:flex;gap:6px;overflow-x:auto;padding:2px 0 4px;scrollbar-width:none;margin-bottom:6px}
-.segs::-webkit-scrollbar{display:none}
-.seg{
-  flex:0 0 auto;padding:9px 14px;border-radius:11px;border:1px solid var(--linea);
-  background:var(--tinta-2);font-size:14px;font-weight:600;white-space:nowrap;
-}
-.seg[aria-current="true"]{background:var(--papel);color:#0C1626;border-color:var(--papel);font-weight:700}
-
-/* ---- Franja de color por tramo en la lista del viaje ---- */
-.tramo-tit{border-left:4px solid var(--ambar);padding-left:11px;margin:26px 0 10px;display:block}
+.tramo-tit{border-left:4px solid var(--rojo);padding-left:11px;margin:26px 0 10px;display:block}
 .tramo-tit h3{font-family:var(--display);font-size:21px;font-weight:800;margin:0;line-height:1.1}
 .tramo-tit .fechas{font-family:var(--mono);font-size:11px;color:var(--tenue);letter-spacing:.05em}
 .t-transito{border-left-color:var(--tenue)}
@@ -405,6 +239,133 @@ body.offline .sinred{display:block}
 .t-kiso{border-left-color:var(--ambar)}
 .t-tokio{border-left-color:var(--c-vuelo)}
 .t-vuelta{border-left-color:var(--tenue)}
+
+.fila-dia{
+  display:flex;gap:12px;align-items:center;width:100%;text-align:left;
+  background:var(--carta);border:1px solid var(--linea);border-radius:12px;
+  padding:11px 13px;margin-bottom:7px;box-shadow:var(--sombra);
+}
+.fila-dia.gris{background:transparent;border-style:dashed;opacity:.62;box-shadow:none}
+.fila-dia.hoy{border-color:var(--rojo);box-shadow:0 0 0 1px rgba(199,54,47,.3)}
+.fila-dia .num{font-family:var(--display);font-size:23px;font-weight:800;line-height:1;width:34px;flex:0 0 auto;text-align:center;color:var(--tenue)}
+.fila-dia.hoy .num{color:var(--rojo)}
+.fila-dia .txt{flex:1;min-width:0}
+.fila-dia .txt b{display:block;font-size:15px;font-weight:700;line-height:1.3}
+.fila-dia .txt span{font-family:var(--mono);font-size:11px;color:var(--tenue);letter-spacing:.04em}
+.iconos-dia{font-size:13px;letter-spacing:2px;flex:0 0 auto;opacity:.85}
+
+/* ---------- COMIDA ---------- */
+.filtros{display:flex;gap:7px;overflow-x:auto;padding:2px 0 8px;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+.filtros::-webkit-scrollbar{display:none}
+.chip{
+  flex:0 0 auto;padding:8px 13px;border-radius:999px;
+  border:1px solid var(--linea);background:var(--carta);
+  font-size:13.5px;font-weight:500;white-space:nowrap;box-shadow:var(--sombra);
+}
+.chip[aria-pressed="true"]{background:var(--tinta);color:#fff;border-color:var(--tinta);font-weight:700}
+.sitio{background:var(--carta);border:1px solid var(--linea);border-radius:var(--r);padding:13px;margin-bottom:9px;box-shadow:var(--sombra)}
+.sitio h4{margin:0 0 2px;font-size:16px;font-weight:700;line-height:1.25}
+.sitio .jp{font-family:var(--mono);font-size:11.5px;color:var(--tenue)}
+.sitio p{margin:7px 0 0;font-size:13.5px;line-height:1.5;color:#4C4A43}
+.sitio .meta{display:flex;flex-wrap:wrap;gap:9px;margin-top:8px;font-family:var(--mono);font-size:11.5px;color:var(--tenue)}
+.cerrado{color:var(--rojo);font-weight:700}
+
+/* ---------- CHECKS ---------- */
+.check{
+  display:flex;gap:11px;align-items:flex-start;width:100%;text-align:left;
+  padding:11px 12px;border-radius:11px;border:1px solid var(--linea);
+  background:var(--carta);margin-bottom:6px;box-shadow:var(--sombra);
+}
+.check .caja{
+  flex:0 0 auto;width:21px;height:21px;border-radius:6px;
+  border:2px solid var(--tenue);margin-top:1px;background:none;box-shadow:none;min-height:0;padding:0;
+  display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:#fff;
+}
+.check[aria-pressed="true"] .caja{background:var(--jade);border-color:var(--jade)}
+.check[aria-pressed="true"] .lab{opacity:.5;text-decoration:line-through}
+.check .lab{font-size:14.5px;line-height:1.4}
+.check .lab em{display:block;font-style:normal;font-size:12.5px;color:var(--tenue);margin-top:2px}
+
+/* ---------- SEGMENTOS ---------- */
+.segs{display:flex;gap:6px;overflow-x:auto;padding:2px 0 4px;scrollbar-width:none;margin-bottom:6px}
+.segs::-webkit-scrollbar{display:none}
+.seg{
+  flex:0 0 auto;padding:9px 14px;border-radius:11px;border:1px solid var(--linea);
+  background:var(--carta);font-size:14px;font-weight:600;white-space:nowrap;box-shadow:var(--sombra);
+}
+.seg[aria-current="true"]{background:var(--rojo);color:#fff;border-color:var(--rojo);font-weight:700}
+
+/* ---------- JUEGO ---------- */
+.juego{border:1px solid var(--linea);border-radius:18px;overflow:hidden;background:var(--carta);box-shadow:var(--sombra)}
+.juego-cab{
+  display:flex;align-items:center;justify-content:space-between;gap:10px;
+  padding:12px 14px;border-bottom:1px solid var(--linea);
+  background:linear-gradient(90deg,#FBEAE8,transparent);
+}
+.juego-cab .t{font-family:var(--mono);font-size:10.5px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--rojo)}
+.racha{font-family:var(--mono);font-size:12px;color:var(--tinta);font-weight:500}
+.juego-cuerpo{padding:14px}
+.dato{font-size:14.5px;line-height:1.55;color:#3E3C36}
+.dato .fuente{display:block;font-family:var(--mono);font-size:10.5px;color:var(--tenue);margin-top:6px;letter-spacing:.03em}
+.quiz-op{
+  display:block;width:100%;text-align:left;padding:11px 13px;border-radius:11px;
+  border:1px solid var(--linea);background:var(--papel);margin-bottom:7px;font-size:14.5px;
+}
+.quiz-op.ok{border-color:var(--jade);background:#EAF5F0}
+.quiz-op.mal{border-color:var(--rojo);background:#FBEAE8}
+.insignias{display:grid;grid-template-columns:repeat(auto-fill,minmax(94px,1fr));gap:8px}
+.insignia{border:1px solid var(--linea);border-radius:12px;padding:11px 8px;text-align:center;background:var(--carta);box-shadow:var(--sombra)}
+.insignia.no{opacity:.35}
+.insignia .em{font-size:23px;display:block;line-height:1.2}
+.insignia .nm{font-size:11px;font-weight:700;margin-top:4px;line-height:1.25}
+
+/* ---------- BARRA INFERIOR ---------- */
+.barra{
+  position:fixed;left:0;right:0;bottom:0;z-index:50;
+  display:grid;grid-template-columns:repeat(5,1fr);
+  background:rgba(255,255,255,.96);
+  backdrop-filter:saturate(160%) blur(16px);
+  -webkit-backdrop-filter:saturate(160%) blur(16px);
+  border-top:1px solid var(--linea);
+  padding-bottom:env(safe-area-inset-bottom);
+}
+.tab{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;height:58px;color:var(--tenue)}
+.tab .g{font-size:19px;line-height:1}
+.tab .n{font-size:10px;font-weight:700;letter-spacing:.02em}
+.tab[aria-current="page"]{color:var(--rojo)}
+.tab[aria-current="page"]::before{content:"";position:absolute;margin-top:-52px;width:26px;height:2px;background:var(--rojo);border-radius:2px}
+
+/* ---------- ESTADO / OFFLINE ---------- */
+.sinred{
+  display:none;background:#FAF3E3;border-bottom:1px solid #EADFC2;
+  color:#7A5A14;font-size:12.5px;padding:7px 16px;text-align:center;
+}
+body.offline .sinred{display:block}
+
+/* ---------- MODAL PERFIL ---------- */
+.velo{position:fixed;inset:0;z-index:90;background:rgba(246,241,230,.97);display:flex;align-items:center;justify-content:center;padding:22px}
+.velo[hidden]{display:none}
+.panel{width:100%;max-width:400px}
+.panel h2{font-family:var(--display);font-size:26px;font-weight:800;margin:0 0 6px;line-height:1.2}
+.panel h2::before{content:"";display:inline-block;width:13px;height:13px;border-radius:50%;background:var(--rojo);margin-right:9px}
+.panel p{color:var(--tenue);font-size:14px;margin:0 0 18px;line-height:1.5}
+.gente{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.persona{
+  padding:14px 10px;border-radius:12px;border:1px solid var(--linea);background:var(--carta);
+  font-size:15.5px;font-weight:700;text-align:center;box-shadow:var(--sombra);
+}
+.persona small{display:block;font-family:var(--mono);font-size:10px;color:var(--tenue);font-weight:400;margin-top:3px;letter-spacing:.06em}
+
+/* ---------- SELECTOR Y CONVERSOR ---------- */
+.selector{display:flex;align-items:center;gap:8px;margin-bottom:14px}
+.selector .bt{flex:0 0 auto}
+.selector .centro{flex:1;text-align:center;font-family:var(--mono);font-size:12px;color:var(--tenue);letter-spacing:.06em}
+.conversor{display:flex;gap:8px;align-items:center;margin-top:9px}
+.conversor input{
+  flex:1;min-width:0;background:var(--papel);border:1px solid var(--linea);border-radius:10px;
+  color:var(--tinta);font-family:var(--mono);font-size:16px;padding:10px 12px;
+}
+.conversor .res{font-family:var(--mono);font-size:16px;font-weight:700;color:var(--rojo);white-space:nowrap}
 </style>
 </head>
 <body>
@@ -901,6 +862,8 @@ const INSIGNIAS = [
 
 <script>
 /* ═══════════  MOTOR DE LA APP — no hace falta tocar nada aquí  ═══════════ */
+(function(){
+"use strict";
 
 /* ---------- Almacenamiento con red de seguridad ----------
    Intenta el disco del móvil. Si el navegador lo bloquea (modo privado,
@@ -930,6 +893,7 @@ let estado = {
   visitas:  Guardar.leer("visitas", []),
   filtro:   {contexto:"todo", antojo:"todo"},
   abiertos: {},
+  avisosVer: null,
   seg:      "maleta"
 };
 
@@ -1032,7 +996,7 @@ function bajarIcs(texto, nombre){
 }
 
 /* ---------- Piezas de HTML ---------- */
-const esc = s => String(s==null?"":s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const esc = s => String(s==null?"":s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 
 function pintaAviso(a){
   const ic = a.tono==="alerta" ? "▲" : a.tono==="atencion" ? "◆" : "•";
@@ -1111,7 +1075,7 @@ const CLIMA_TIPICO = {
 function tiempoGuardado(d){ return Guardar.leer("tiempo:"+d.fecha, null); }
 
 async function bajaTiempo(d){
-  if(!d.coords || !navigator.onLine) return;
+  if(!d.coords || !navigator.onLine) return false;
   const [la,lo] = d.coords;
   const u = `https://api.open-meteo.com/v1/forecast?latitude=${la}&longitude=${lo}`
     + `&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_probability_max`
@@ -1119,7 +1083,7 @@ async function bajaTiempo(d){
   try{
     const r = await fetch(u);
     const j = await r.json();
-    if(!j.daily || !j.daily.time || !j.daily.time.length) return;
+    if(!j.daily || !j.daily.time || !j.daily.time.length) return false;
     Guardar.escribir("tiempo:"+d.fecha, {
       max:Math.round(j.daily.temperature_2m_max[0]),
       min:Math.round(j.daily.temperature_2m_min[0]),
@@ -1128,7 +1092,8 @@ async function bajaTiempo(d){
       cuando:Date.now()
     });
     if(estado.vista==="hoy") pintaHoy();
-  }catch(e){}
+    return true;
+  }catch(e){ return false; }
 }
 function haceCuanto(ms){
   const m = Math.round((Date.now()-ms)/60000);
@@ -1144,20 +1109,20 @@ function pintaCajas(d){
   let caja1;
   if(t){
     const [txt,em] = CIELO[t.cod] || ["—","·"];
-    caja1 = `<div class="caja tiempo">
+    caja1 = `<button class="caja tiempo" data-tiempo="1">
       <div class="eti">tiempo</div>
       <div><div class="gordo">${em} ${t.max}°</div>
       <div class="peq">${esc(txt)} · mín ${t.min}°${t.lluvia!=null?` · ${t.lluvia}% lluvia`:""}</div></div>
-      <div class="peq ${Date.now()-t.cuando>21600000?"viejo":""}">Actualizado ${haceCuanto(t.cuando)}</div>
-    </div>`;
+      <div class="peq ${Date.now()-t.cuando>21600000?"viejo":""}" data-pie-tiempo>Actualizado ${haceCuanto(t.cuando)} · toca para refrescar</div>
+    </button>`;
   } else {
     const isla = Object.keys(CLIMA_TIPICO).find(k=>d.isla.includes(k.split("-")[0].split(" ")[0]));
-    caja1 = `<div class="caja tiempo">
+    caja1 = `<button class="caja tiempo" data-tiempo="1">
       <div class="eti">tiempo</div>
       <div><div class="gordo" style="font-size:19px">Sin previsión</div>
-      <div class="peq">${esc(isla?CLIMA_TIPICO[isla]:"Enciende los datos un momento y se guarda para consultarla luego sin conexión.")}</div></div>
-      <div class="peq">Media de la época</div>
-    </div>`;
+      <div class="peq">${esc(isla?CLIMA_TIPICO[isla]:"Toca con los datos encendidos y se guarda para verla luego sin conexión.")}</div></div>
+      <div class="peq" data-pie-tiempo>Media de la época · toca para bajarla</div>
+    </button>`;
   }
 
   const al = ALOJ[d.alojamientoId];
@@ -1196,7 +1161,17 @@ function pintaHoy(){
 
   if(fuera) h += pintaAviso({tono:"info", texto:`Este tramo no es tuyo: ${esc(d.isla)} lo hacen Nacho, Laura, Álvaro y Cris. Tú te unes el 3 de noviembre en Osaka.`});
   if(d.porPlanificar) h += pintaAviso({tono:"atencion", texto:"<b>Día por planificar.</b> Todavía no hay nada cargado para esta jornada."});
-  (d.avisos||[]).forEach(a=> h += pintaAviso(a));
+  const avs = d.avisos||[];
+  if(avs.length===1){ h += pintaAviso(avs[0]); }
+  else if(avs.length>1){
+    const abiertoAv = estado.avisosVer===d.id;
+    const peor = avs.some(a=>a.tono==="alerta") ? "alerta" : avs.some(a=>a.tono==="atencion") ? "atencion" : "info";
+    h += `<button class="aviso ${peor}" data-avisos="${d.id}">
+      <span class="ic">${peor==="alerta"?"▲":"◆"}</span>
+      <div><b>${avs.length} avisos de este día</b>${abiertoAv?"":" — toca para leerlos"}</div>
+      <span class="abrir-avisos">${abiertoAv?"CERRAR":"VER"}</span></button>`;
+    if(abiertoAv) avs.forEach(a=> h += pintaAviso(a));
+  }
 
   /* Lo siguiente */
   if(hoy && d.bloques){
@@ -1270,7 +1245,7 @@ function pintaHoy(){
       h += `<div class="tarjeta" style="margin-bottom:9px">
         <div class="mono mini tenue" style="letter-spacing:.14em;text-transform:uppercase">${esc(momento)}</div>
         ${c.nota?`<div class="mini tenue" style="margin-top:4px">${esc(c.nota)}</div>`:""}`;
-      c.sugerencias.forEach(id=>{
+      (c.sugerencias||[]).forEach(id=>{
         const s = SITIOS.find(x=>x.id===id); if(!s) return;
         const abre = abreEl(s, d.fecha);
         h += `<div style="margin-top:10px;padding-top:10px;border-top:1px solid var(--linea)">
@@ -1278,7 +1253,7 @@ function pintaHoy(){
             <b style="font-size:15px">${esc(s.nombre)}</b>
             <span class="mono mini ${abre?"tenue":"cerrado"}">${abre?esc(s.horario):"CIERRA HOY"}</span>
           </div>
-          <div class="mini tenue" style="margin-top:3px">${esc(s.nota)}</div>
+          <div class="mini tenue clamp2" style="margin-top:3px">${esc(s.nota)}</div>
           <div class="acciones"><button class="bt fino" data-abre="${esc(mapaApple(s.nombre,s.lat,s.lng))}">Mapa</button>
           ${s.tel?`<a class="bt fino" href="tel:${esc(s.tel)}">Llamar</a>`:""}</div>
         </div>`;
@@ -1608,12 +1583,17 @@ function ir(v){
   render();
 }
 function render(){
-  pintaCab();
-  if(estado.vista==="hoy"){ pintaHoy(); bajaTiempo(diaActivo()); }
-  if(estado.vista==="viaje") pintaViaje();
-  if(estado.vista==="comida") pintaComida();
-  if(estado.vista==="prep") pintaPrep();
-  if(estado.vista==="juego") pintaJuegoVista();
+  try{
+    pintaCab();
+    if(estado.vista==="hoy"){ pintaHoy(); bajaTiempo(diaActivo()); }
+    if(estado.vista==="viaje") pintaViaje();
+    if(estado.vista==="comida") pintaComida();
+    if(estado.vista==="prep") pintaPrep();
+    if(estado.vista==="juego") pintaJuegoVista();
+  }catch(err){
+    const v = document.getElementById("v-"+estado.vista);
+    if(v) v.innerHTML = `<div class="aviso alerta"><span class="ic">▲</span><div><b>Algo ha fallado pintando esta pantalla.</b> Suele ser un error de formato en los datos: revisa el último cambio. Detalle: ${esc(err.message)}</div></div>`;
+  }
 }
 
 /* ---------- Perfil ---------- */
@@ -1625,11 +1605,15 @@ function pidePerfil(){
 
 /* ---------- Un solo oyente para todo ---------- */
 document.addEventListener("click", e=>{
-  const t = e.target.closest("[data-tab],[data-dia],[data-elige],[data-check],[data-quiz],[data-reto],[data-predi],[data-fc],[data-fa],[data-plega],[data-seg],[data-abre],[data-ics],[data-ics-todo],[data-sync],[data-perfil],[data-yo]");
+  const t = e.target.closest("[data-tab],[data-dia],[data-elige],[data-check],[data-quiz],[data-reto],[data-predi],[data-fc],[data-fa],[data-plega],[data-seg],[data-tiempo],[data-avisos],[data-abre],[data-ics],[data-ics-todo],[data-sync],[data-perfil],[data-yo]");
   if(!t) return;
   const d = t.dataset;
 
-  if(d.abre){ e.preventDefault(); e.stopPropagation(); window.open(d.abre,"_blank","noopener"); return; }
+  if(d.abre){
+    e.preventDefault(); e.stopPropagation();
+    if(/^https:\/\//i.test(d.abre)) window.open(d.abre, "_blank", "noopener,noreferrer");
+    return;
+  }
   if(d.tab){ ir(d.tab); return; }
   if(d.yo){ estado.perfil = d.yo; Guardar.escribir("perfil", d.yo); document.getElementById("velo").hidden = true; render(); return; }
   if(d.perfil){ pidePerfil(); return; }
@@ -1643,6 +1627,22 @@ document.addEventListener("click", e=>{
   if(d.reto){ estado.retos[d.reto] = !estado.retos[d.reto]; Guardar.escribir("retos", estado.retos); render(); return; }
   if(d.quiz){ const [id,i] = d.quiz.split("|"); estado.quiz[id] = +i; Guardar.escribir("quiz", estado.quiz); render(); return; }
   if(d.predi){ const [id,i] = d.predi.split("|"); estado.predi[id] = +i; Guardar.escribir("predi", estado.predi); render(); return; }
+  if(d.avisos){
+    estado.avisosVer = (estado.avisosVer===d.avisos) ? null : d.avisos;
+    pintaHoy(); return;
+  }
+  if(d.tiempo){
+    const pie = t.querySelector("[data-pie-tiempo]");
+    if(!navigator.onLine){
+      if(pie){ pie.textContent = "Sin conexión ahora mismo"; setTimeout(()=>pintaHoy(), 1800); }
+      return;
+    }
+    if(pie) pie.textContent = "Actualizando…";
+    bajaTiempo(diaActivo()).then(ok=>{
+      if(!ok && pie){ pie.textContent = "No se pudo bajar. Prueba otra vez."; setTimeout(()=>pintaHoy(), 2200); }
+    });
+    return;
+  }
   if(d.plega){
     const sig = document.querySelector(`[data-plega="${d.plega}"]`);
     estado.abiertos[d.plega] = !(sig && sig.getAttribute("aria-expanded")==="true");
@@ -1654,7 +1654,9 @@ document.addEventListener("click", e=>{
   if(d.icsTodo){ bajarIcs(icsDelViaje(), "viaje-japon.ics"); return; }
   if(d.ics){
     const dia = DIAS.find(x=>(x.bloques||[]).some(b=>b.id===d.ics));
+    if(!dia) return;
     const b = dia.bloques.find(x=>x.id===d.ics);
+    if(!b || !b.vuelo) return;
     bajarIcs(["BEGIN:VCALENDAR","VERSION:2.0","PRODID:-//Ryukyu//ES",
       eventoIcs({uid:b.id, ini:b.vuelo.salida, fin:b.vuelo.llegada,
         tit:"✈︎ "+b.vuelo.numero+"  "+b.vuelo.desde+" → "+b.vuelo.hasta,
@@ -1673,15 +1675,18 @@ document.addEventListener("input", e=>{
 
 /* ---------- Sincronización manual ---------- */
 async function sincroniza(bt){
-  if(!SYNC_URL) return;
+  if(!SYNC_URL || !/^https:\/\//i.test(SYNC_URL)) return;
   bt.textContent = "Bajando…"; bt.disabled = true;
   try{
     const r = await fetch(SYNC_URL, {cache:"no-store"});
+    if(!r.ok) throw new Error("HTTP "+r.status);
     const j = await r.json();
-    if(j.VERSION > VERSION){ Guardar.escribir("remoto", j); bt.textContent = "Versión "+j.VERSION+" — reinicia"; }
+    const bienFormado = j && typeof j.VERSION==="number" && Array.isArray(j.DIAS);
+    if(!bienFormado){ bt.textContent = "El archivo remoto no tiene buena pinta"; }
+    else if(j.VERSION > VERSION){ Guardar.escribir("remoto", j); bt.textContent = "Versión "+j.VERSION+" — reinicia la app"; }
     else bt.textContent = "Ya tienes la última";
   }catch(err){ bt.textContent = "Sin conexión"; }
-  setTimeout(()=>{ bt.textContent = "Sincronizar"; bt.disabled = false; }, 2600);
+  setTimeout(()=>{ bt.textContent = "Buscar una versión más nueva"; bt.disabled = false; }, 2800);
 }
 
 /* ---------- Estado de red ---------- */
@@ -1701,6 +1706,7 @@ window.addEventListener("offline", marcaRed);
   if("serviceWorker" in navigator){
     navigator.serviceWorker.register("sw.js").catch(()=>{});
   }
+})();
 })();
 </script>
 </body>
